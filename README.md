@@ -1,4 +1,4 @@
-# pan
+# pan [![Build Status](https://travis-ci.org/EDyO/pan.svg)](https://travis-ci.org/EDyO/pan) [![Code Climate](https://codeclimate.com/github/EDyO/pan/badges/gpa.svg)](https://codeclimate.com/github/EDyO/pan)
 
 `pan` is a RSS feed management tool.
 
