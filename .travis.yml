@@ -1,10 +1,20 @@
 language: go
-
 go:
   - 1.8
   - 1.7
   - master
-
+install:
+  - go get github.com/ghodss/yaml
+  - go get github.com/spf13/cobra
+  - go get github.com/spf13/viper
+  - go get golang.org/x/tools/cmd/cover
+  - go get github.com/mattn/goveralls
+script:
+  - go test -v -covermode=count -coverprofile=coverage.out github.com/EDyO/pan/pan
+  - test -z "${COVERALLS_TOKEN}" || "$HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN"
 addons:
-    code_climate:
-        repo_token: 0d291232cf39d3b0989dda687b3510214cc9ece05bf13f1c863af9ef16a39181
+  code_climate:
+    repo_token: 0d291232cf39d3b0989dda687b3510214cc9ece05bf13f1c863af9ef16a39181
+env:
+  global:
+    secure: s/62XP6Qjb775pBnC9ytcZWPCKDlxdyqwVeP5OYydDq32WumO/heSFazCfCaA7ENPeq4pmouwq/LNlrzM5V20vgf2KG+tG+hhfN/Px04N2TFOv/ja9cWnBY1yHePywJPMQDeYrqRFQgzE31wltIHBaU9yUaiL4JXhsF8wIOcXPPuFc2yYYC5/9IdXMtOLT6drUzAjs8D6d9fxhhYuae0l9JCExwl6F6M6ki5ukQvi6umdlfE6hH/nbqcOKw/wZeVFt5la291VzgIFCoMtK0A6lDJ2itxz05FVky+sTPFhfoTGJhQ8kRqWdPofmrOqLyKLHeNg68Inj7uNsTsmDbwzDefiwcB75zX1DapUUn/s22sUrj7qEsa9/tPABVoz0BtnE59wOu3T0oHgU1nrTEJ8yMotXdWaCr164yD+AKy6bODUMVZzKBFAwIr5PZT1kDXPk8Ta4PDw8n/3+vrCJ8ifMPZMA5I/+of7NATP0vbGpk0WRQzaydzCiYiTjzsJXGoWt2RL1labEj2ym5q6mFuFVgrhu0geuOYCnHGoUT5SdiNvmKoAY4lyauyXPb1HUKbC+csMsoEBJfXgRL/G6JexP1rQocIul3G824/HT6+bCQP63Rfkt5Sxa70jprncE6qsS2A+wrAeBF9POZyCkSBf0c5WQrSuPH9WTFtv7c8wGU=
