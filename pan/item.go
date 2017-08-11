@@ -18,12 +18,17 @@
 
 package pan
 
+import (
+	"encoding/xml"
+)
+
 // Item represents each episode.
 type Item struct {
-	Title       string
-	Link        string
-	Description string
-	PubDate     string
+	XMLName     xml.Name `xml:"item"`
+	Title       string   `xml:"title"`
+	Link        string   `xml:"link"`
+	Description string   `xml:"description"`
+	PubDate     string   `xml:"pubDate"`
 }
 
 // Equal returns true if item2 is equal to i, false otherwise.

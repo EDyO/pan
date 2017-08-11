@@ -19,8 +19,10 @@
 package pan_test
 
 import (
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
+	"strings"
 	"testing"
 
 	"gopkg.in/yaml.v2"
@@ -35,28 +37,19 @@ func check(e error) {
 }
 
 type fixture struct {
-	name string
-	desc string
-	item pan.Item
+	name      string
+	desc      string
+	item      interface{}
+	checkFail func(interface{}, *testing.T)
 }
 
-func (f *fixture) load() (content string) {
+func (f *fixture) load(format string) (content string) {
 	fixtureContent, err := ioutil.ReadFile(
-		fmt.Sprintf("fixtures/%s.yml", f.name),
+		fmt.Sprintf("fixtures/%s.%s", f.name, strings.ToLower(format)),
 	)
 	check(err)
 	content = string(fixtureContent)
 	return
-}
-
-func (f *fixture) checkFail(result pan.Item, t *testing.T) {
-	if !f.item.Equal(result) {
-		t.Errorf(
-			"Loaded items should be equal:\n%s\n%s",
-			f.item,
-			result,
-		)
-	}
 }
 
 var item1 = pan.Item{
@@ -98,7 +91,17 @@ var fixtures = []fixture{
 
 func TestItemUnmarshalYAML(t *testing.T) {
 	for _, fixture := range fixtures {
-		content := fixture.load()
+		content := fixture.load("yml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			item := fixture.item.(pan.Item)
+			if !item.Equal(result.(pan.Item)) {
+				t.Errorf(
+					"Loaded items should be equal:\n%s\n%s",
+					item,
+					result,
+				)
+			}
+		}
 		t.Run(
 			fixture.desc,
 			func(t *testing.T) {
@@ -106,6 +109,34 @@ func TestItemUnmarshalYAML(t *testing.T) {
 				err := yaml.Unmarshal([]byte(content), &item)
 				check(err)
 				fixture.checkFail(item, t)
+			},
+		)
+	}
+}
+
+func TestItemMarshalXML(t *testing.T) {
+	for _, fixture := range fixtures {
+		content := fixture.load("xml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			if content != result.(string) {
+				t.Errorf(
+					"XML strings should be equal:\n%s\n%s",
+					content,
+					result,
+				)
+			}
+		}
+		t.Run(
+			fixture.desc,
+			func(t *testing.T) {
+				b, err := xml.MarshalIndent(
+					&fixture.item,
+					"",
+					"  ",
+				)
+				check(err)
+				result := xml.Header + string(b) + "\n"
+				fixture.checkFail(result, t)
 			},
 		)
 	}
