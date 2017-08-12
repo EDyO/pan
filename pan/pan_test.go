@@ -34,7 +34,7 @@ func check(e error) {
 type fixture struct {
 	name      string
 	desc      string
-	item      interface{}
+	result    interface{}
 	checkFail func(interface{}, *testing.T)
 }
 
