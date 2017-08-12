@@ -1,0 +1,41 @@
+// Copyright © 2017 Ignasi Fosch
+//
+//  This file is part of pan.
+//
+//  pan is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  pan is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public License
+//  along with pan. If not, see <http://www.gnu.org/licenses/>.
+//
+
+package pan
+
+import (
+	"encoding/xml"
+)
+
+// Enclosure represents the definition of the resource shared.
+type Enclosure struct {
+	XMLName xml.Name `xml:"enclosure"`
+	Length  string   `xml:"length"`
+	Type    string   `xml:"type"`
+	URL     string   `xml:"url"`
+}
+
+// Equal returns true if enclosure2 is equal to e, false otherwise.
+func (e *Enclosure) Equal(enclosure Enclosure) bool {
+	if e.Length != enclosure.Length ||
+		e.Type != enclosure.Type ||
+		e.URL != enclosure.URL {
+		return false
+	}
+	return true
+}
