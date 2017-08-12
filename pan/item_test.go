@@ -59,7 +59,7 @@ func TestItemEqual(t *testing.T) {
 	}
 }
 
-var fixtures = []fixture{
+var itemFixtures = []fixture{
 	{
 		name:   "item1",
 		desc:   "Simple item",
@@ -68,7 +68,7 @@ var fixtures = []fixture{
 }
 
 func TestItemUnmarshalYAML(t *testing.T) {
-	for _, fixture := range fixtures {
+	for _, fixture := range itemFixtures {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			item := fixture.result.(pan.Item)
@@ -93,7 +93,7 @@ func TestItemUnmarshalYAML(t *testing.T) {
 }
 
 func TestItemMarshalXML(t *testing.T) {
-	for _, fixture := range fixtures {
+	for _, fixture := range itemFixtures {
 		content := fixture.load("xml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			if content != result.(string) {

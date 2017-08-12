@@ -21,6 +21,8 @@ package pan_test
 import (
 	"testing"
 
+	"gopkg.in/yaml.v2"
+
 	"github.com/EDyO/pan/pan"
 )
 
@@ -49,3 +51,66 @@ func TestEnclosureEqual(t *testing.T) {
 		t.Errorf("Enclosures should not be equal:\n%s\n%s", enclosure1, enclosure2)
 	}
 }
+
+var enclosureFixtures = []fixture{
+	{
+		name:   "enclosure1",
+		desc:   "Simple enclosure",
+		result: enclosure1,
+	},
+}
+
+func TestEnclosureUnmarshalYAML(t *testing.T) {
+	for _, fixture := range enclosureFixtures {
+		content := fixture.load("yml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			enclosure := fixture.result.(pan.Enclosure)
+			if !enclosure.Equal(result.(pan.Enclosure)) {
+				t.Errorf(
+					"Loaded enclosures should be equal:\n%s\n%s",
+					enclosure,
+					result,
+				)
+			}
+		}
+		t.Run(
+			fixture.desc,
+			func(t *testing.T) {
+				enclosure := pan.Enclosure{}
+				err := yaml.Unmarshal([]byte(content), &enclosure)
+				check(err)
+				fixture.checkFail(enclosure, t)
+			},
+		)
+	}
+}
+
+/*
+func TestItemMarshalXML(t *testing.T) {
+	for _, fixture := range fixtures {
+		content := fixture.load("xml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			if content != result.(string) {
+				t.Errorf(
+					"XML strings should be equal:\n%s\n%s",
+					content,
+					result,
+				)
+			}
+		}
+		t.Run(
+			fixture.desc,
+			func(t *testing.T) {
+				b, err := xml.MarshalIndent(
+					&fixture.item,
+					"",
+					"  ",
+				)
+				check(err)
+				result := xml.Header + string(b) + "\n"
+				fixture.checkFail(result, t)
+			},
+		)
+	}
+}
+*/

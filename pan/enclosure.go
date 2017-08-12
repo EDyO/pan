@@ -20,6 +20,7 @@ package pan
 
 import (
 	"encoding/xml"
+	"strconv"
 )
 
 // Enclosure represents the definition of the resource shared.
@@ -38,4 +39,17 @@ func (e *Enclosure) Equal(enclosure Enclosure) bool {
 		return false
 	}
 	return true
+}
+
+// UnmarshalYAML is the unmarshaler for Enclosure.
+func (e *Enclosure) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
+	var enclosure map[string]interface{}
+	if err = unmarshal(&enclosure); err != nil {
+		return
+	}
+	attributes := enclosure["attributes"].(map[interface{}]interface{})
+	e.Length = strconv.Itoa(attributes["length"].(int))
+	e.Type = attributes["type"].(string)
+	e.URL = attributes["url"].(string)
+	return
 }
