@@ -20,6 +20,7 @@ package pan
 
 import (
 	"encoding/xml"
+	"strconv"
 )
 
 // Item represents each episode.
@@ -30,6 +31,7 @@ type Item struct {
 	GUID        string   `xml:"guid"`
 	Description string   `xml:"description"`
 	PubDate     string   `xml:"pubDate"`
+	Enclosure   Enclosure
 }
 
 // Equal returns true if item2 is equal to i, false otherwise.
@@ -38,7 +40,8 @@ func (i *Item) Equal(item Item) bool {
 		i.Link != item.Link ||
 		i.GUID != item.GUID ||
 		i.Description != item.Description ||
-		i.PubDate != item.PubDate {
+		i.PubDate != item.PubDate ||
+		!i.Enclosure.Equal(item.Enclosure) {
 		return false
 	}
 	return true
@@ -55,5 +58,12 @@ func (i *Item) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	i.GUID = item["link"].(string)
 	i.Description = item["description"].(string)
 	i.PubDate = item["pubDate"].(string)
+	enclosure := item["enclosure"].(map[interface{}]interface{})
+	attributes := enclosure["attributes"].(map[interface{}]interface{})
+	i.Enclosure = Enclosure{
+		Length: strconv.Itoa(attributes["length"].(int)),
+		Type:   attributes["type"].(string),
+		URL:    attributes["url"].(string),
+	}
 	return
 }
