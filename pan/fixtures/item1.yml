@@ -2,3 +2,8 @@ title: This is the title of the episode
 link: http://link.to/episode1.mp3
 description: Small summary of the episode
 pubDate: Sun, 26 Jan 2014 23:00:00 +0000
+enclosure:
+  attributes:
+    length: 234875
+    type: audio/mpeg
+    url: http://link.to/episode1.mp3

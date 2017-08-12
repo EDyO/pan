@@ -26,9 +26,9 @@ import (
 // Enclosure represents the definition of the resource shared.
 type Enclosure struct {
 	XMLName xml.Name `xml:"enclosure"`
-	Length  string   `xml:"length"`
-	Type    string   `xml:"type"`
-	URL     string   `xml:"url"`
+	Length  string   `xml:"length,attr"`
+	Type    string   `xml:"type,attr"`
+	URL     string   `xml:"url,attr"`
 }
 
 // Equal returns true if enclosure2 is equal to e, false otherwise.

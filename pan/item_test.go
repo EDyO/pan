@@ -33,6 +33,7 @@ var item1 = pan.Item{
 	GUID:        "http://link.to/episode1.mp3",
 	Description: "Small summary of the episode",
 	PubDate:     "Sun, 26 Jan 2014 23:00:00 +0000",
+	Enclosure:   enclosure1,
 }
 
 var item2 = pan.Item{
@@ -41,6 +42,16 @@ var item2 = pan.Item{
 	GUID:        "http://link.to/episode2.mp3",
 	Description: "Small summary of the second episode",
 	PubDate:     "Sun, 26 Feb 2014 23:00:00 +0000",
+	Enclosure:   enclosure2,
+}
+
+var item3 = pan.Item{
+	Title:       "This is the title of the episode",
+	Link:        "http://link.to/episode1.mp3",
+	GUID:        "http://link.to/episode1.mp3",
+	Description: "Small summary of the episode",
+	PubDate:     "Sun, 26 Jan 2014 23:00:00 +0000",
+	Enclosure:   enclosure2,
 }
 
 func TestItemEqual(t *testing.T) {
@@ -50,11 +61,15 @@ func TestItemEqual(t *testing.T) {
 		GUID:        item1.Link,
 		Description: item1.Description,
 		PubDate:     item1.PubDate,
+		Enclosure:   enclosure1,
 	}
 	if !item1.Equal(itemEqual) {
 		t.Errorf("Items should be equal:\n%s\n%s", item1, itemEqual)
 	}
 	if item1.Equal(item2) {
+		t.Errorf("Items should not be equal:\n%s\n%s", item1, item2)
+	}
+	if item1.Equal(item3) {
 		t.Errorf("Items should not be equal:\n%s\n%s", item1, item2)
 	}
 }
