@@ -19,6 +19,7 @@
 package pan_test
 
 import (
+	"encoding/xml"
 	"testing"
 
 	"gopkg.in/yaml.v2"
@@ -85,9 +86,8 @@ func TestEnclosureUnmarshalYAML(t *testing.T) {
 	}
 }
 
-/*
-func TestItemMarshalXML(t *testing.T) {
-	for _, fixture := range fixtures {
+func TestEnclosureMarshalXML(t *testing.T) {
+	for _, fixture := range enclosureFixtures {
 		content := fixture.load("xml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			if content != result.(string) {
@@ -102,7 +102,7 @@ func TestItemMarshalXML(t *testing.T) {
 			fixture.desc,
 			func(t *testing.T) {
 				b, err := xml.MarshalIndent(
-					&fixture.item,
+					&fixture.result,
 					"",
 					"  ",
 				)
@@ -113,4 +113,3 @@ func TestItemMarshalXML(t *testing.T) {
 		)
 	}
 }
-*/
