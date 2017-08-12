@@ -27,7 +27,7 @@ type Item struct {
 	XMLName     xml.Name `xml:"item"`
 	Title       string   `xml:"title"`
 	Link        string   `xml:"link"`
-	Guid        string   `xml:"guid"`
+	GUID        string   `xml:"guid"`
 	Description string   `xml:"description"`
 	PubDate     string   `xml:"pubDate"`
 }
@@ -36,7 +36,7 @@ type Item struct {
 func (i *Item) Equal(item Item) bool {
 	if i.Title != item.Title ||
 		i.Link != item.Link ||
-		i.Guid != item.Guid ||
+		i.GUID != item.GUID ||
 		i.Description != item.Description ||
 		i.PubDate != item.PubDate {
 		return false
@@ -52,7 +52,7 @@ func (i *Item) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	}
 	i.Title = item["title"].(string)
 	i.Link = item["link"].(string)
-	i.Guid = item["link"].(string)
+	i.GUID = item["link"].(string)
 	i.Description = item["description"].(string)
 	i.PubDate = item["pubDate"].(string)
 	return

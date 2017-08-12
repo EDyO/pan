@@ -30,7 +30,7 @@ import (
 var item1 = pan.Item{
 	Title:       "This is the title of the episode",
 	Link:        "http://link.to/episode1.mp3",
-	Guid:        "http://link.to/episode1.mp3",
+	GUID:        "http://link.to/episode1.mp3",
 	Description: "Small summary of the episode",
 	PubDate:     "Sun, 26 Jan 2014 23:00:00 +0000",
 }
@@ -38,7 +38,7 @@ var item1 = pan.Item{
 var item2 = pan.Item{
 	Title:       "This is the title of another episode",
 	Link:        "http://link.to/episode2.mp3",
-	Guid:        "http://link.to/episode2.mp3",
+	GUID:        "http://link.to/episode2.mp3",
 	Description: "Small summary of the second episode",
 	PubDate:     "Sun, 26 Feb 2014 23:00:00 +0000",
 }
@@ -47,7 +47,7 @@ func TestItemEqual(t *testing.T) {
 	itemEqual := pan.Item{
 		Title:       item1.Title,
 		Link:        item1.Link,
-		Guid:        item1.Link,
+		GUID:        item1.Link,
 		Description: item1.Description,
 		PubDate:     item1.PubDate,
 	}
