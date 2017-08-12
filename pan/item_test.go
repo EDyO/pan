@@ -20,37 +20,12 @@ package pan_test
 
 import (
 	"encoding/xml"
-	"fmt"
-	"io/ioutil"
-	"strings"
 	"testing"
 
 	"gopkg.in/yaml.v2"
 
 	"github.com/EDyO/pan/pan"
 )
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-type fixture struct {
-	name      string
-	desc      string
-	item      interface{}
-	checkFail func(interface{}, *testing.T)
-}
-
-func (f *fixture) load(format string) (content string) {
-	fixtureContent, err := ioutil.ReadFile(
-		fmt.Sprintf("fixtures/%s.%s", f.name, strings.ToLower(format)),
-	)
-	check(err)
-	content = string(fixtureContent)
-	return
-}
 
 var item1 = pan.Item{
 	Title:       "This is the title of the episode",

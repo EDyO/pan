@@ -33,16 +33,10 @@ type Item struct {
 
 // Equal returns true if item2 is equal to i, false otherwise.
 func (i *Item) Equal(item Item) bool {
-	if i.Title != item.Title {
-		return false
-	}
-	if i.Link != item.Link {
-		return false
-	}
-	if i.Description != item.Description {
-		return false
-	}
-	if i.PubDate != item.PubDate {
+	if i.Title != item.Title ||
+		i.Link != item.Link ||
+		i.Description != item.Description ||
+		i.PubDate != item.PubDate {
 		return false
 	}
 	return true
