@@ -19,7 +19,10 @@
 package pan_test
 
 import (
+	"encoding/xml"
 	"testing"
+
+	"gopkg.in/yaml.v2"
 
 	"github.com/EDyO/pan/pan"
 )
@@ -53,5 +56,66 @@ func TestChannelEqual(t *testing.T) {
 	}
 	if channel1.Equal(channel2) {
 		t.Errorf("Channels should not be equal:\n%s\n%s", channel1, channel2)
+	}
+}
+
+var channelFixtures = []fixture{
+	{
+		name:   "channel1",
+		desc:   "Simple channel",
+		result: channel1,
+	},
+}
+
+func TestChannelUnmarshalYAML(t *testing.T) {
+	for _, fixture := range channelFixtures {
+		content := fixture.load("yml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			channel := fixture.result.(pan.Channel)
+			if !channel.Equal(result.(pan.Channel)) {
+				t.Errorf(
+					"Loaded channels should be equal:\n%s\n%s",
+					channel,
+					result,
+				)
+			}
+		}
+		t.Run(
+			fixture.desc,
+			func(t *testing.T) {
+				channel := pan.Channel{}
+				err := yaml.Unmarshal([]byte(content), &channel)
+				check(err)
+				fixture.checkFail(channel, t)
+			},
+		)
+	}
+}
+
+func TestChannelMarshalXML(t *testing.T) {
+	for _, fixture := range channelFixtures {
+		content := fixture.load("xml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			if content != result.(string) {
+				t.Errorf(
+					"XML strings should be equal:\n%s\n%s",
+					content,
+					result,
+				)
+			}
+		}
+		t.Run(
+			fixture.desc,
+			func(t *testing.T) {
+				b, err := xml.MarshalIndent(
+					&fixture.result,
+					"",
+					"  ",
+				)
+				check(err)
+				result := xml.Header + string(b) + "\n"
+				fixture.checkFail(result, t)
+			},
+		)
 	}
 }
