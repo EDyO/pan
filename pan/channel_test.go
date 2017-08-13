@@ -44,6 +44,18 @@ var channel2 = pan.Channel{
 	Description: "This podcast is about something else",
 }
 
+var channel3 = pan.Channel{
+	Title:       "Something Podcast",
+	Link:        "http://link.to",
+	Language:    "en-us",
+	Copyright:   "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
+	Description: "This podcast is about something",
+	Items: []pan.Item{
+		item1,
+		item2,
+	},
+}
+
 func TestChannelEqual(t *testing.T) {
 	channelEqual := pan.Channel{
 		Title:       channel1.Title,
@@ -66,6 +78,11 @@ var channelFixtures = []fixture{
 		name:   "channel1",
 		desc:   "Simple channel",
 		result: channel1,
+	},
+	{
+		name:   "channel3",
+		desc:   "Simple channel with two episodes",
+		result: channel3,
 	},
 }
 
