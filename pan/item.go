@@ -60,6 +60,9 @@ func (i *Item) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	i.PubDate = item["pubDate"].(string)
 	enclosure := item["enclosure"].(map[interface{}]interface{})
 	attributes := enclosure["attributes"].(map[interface{}]interface{})
+	if _, ok := attributes["url"]; !ok {
+		attributes["url"] = i.Link
+	}
 	i.Enclosure = Enclosure{
 		Length: strconv.Itoa(attributes["length"].(int)),
 		Type:   attributes["type"].(string),
