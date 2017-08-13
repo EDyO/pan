@@ -21,6 +21,8 @@ package pan_test
 import (
 	"testing"
 
+	"gopkg.in/yaml.v2"
+
 	"github.com/EDyO/pan/pan"
 )
 
@@ -41,5 +43,38 @@ func TestRSSEqual(t *testing.T) {
 	}
 	if rss1.Equal(rss2) {
 		t.Errorf("RSSs should not be equal:\n%s\n%s", rss1, rss2)
+	}
+}
+
+var rssFixtures = []fixture{
+	{
+		name:   "rss1",
+		desc:   "Simple RSS",
+		result: rss1,
+	},
+}
+
+func TestRSS(t *testing.T) {
+	for _, fixture := range rssFixtures {
+		content := fixture.load("yml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			rss := fixture.result.(pan.RSS)
+			if !rss.Equal(result.(pan.RSS)) {
+				t.Errorf(
+					"Loaded RSSs should be equal:\n%s\n%s",
+					rss,
+					result,
+				)
+			}
+		}
+		t.Run(
+			fixture.desc,
+			func(t *testing.T) {
+				rss := pan.RSS{}
+				err := yaml.Unmarshal([]byte(content), &rss)
+				check(err)
+				fixture.checkFail(rss, t)
+			},
+		)
 	}
 }
