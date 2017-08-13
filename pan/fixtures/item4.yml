@@ -1,0 +1,8 @@
+title: May the fourth be with you
+link: http://link.to/episode4.mp3
+description: A long time ago in a galaxy far, far away...
+pubDate: Sun, 26 Jan 2015 23:00:00 +0000
+enclosure:
+  attributes:
+    length: 789345
+    type: audio/mpeg

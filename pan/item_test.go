@@ -54,6 +54,19 @@ var item3 = pan.Item{
 	Enclosure:   enclosure2,
 }
 
+var item4 = pan.Item{
+	Title:       "May the fourth be with you",
+	Link:        "http://link.to/episode4.mp3",
+	GUID:        "http://link.to/episode4.mp3",
+	Description: "A long time ago in a galaxy far, far away...",
+	PubDate:     "Sun, 26 Jan 2015 23:00:00 +0000",
+	Enclosure: pan.Enclosure{
+		Length: "789345",
+		Type:   "audio/mpeg",
+		URL:    "http://link.to/episode4.mp3",
+	},
+}
+
 func TestItemEqual(t *testing.T) {
 	itemEqual := pan.Item{
 		Title:       item1.Title,
@@ -79,6 +92,11 @@ var itemFixtures = []fixture{
 		name:   "item1",
 		desc:   "Simple item",
 		result: item1,
+	},
+	{
+		name:   "item4",
+		desc:   "Item without URL in Enclosure",
+		result: item4,
 	},
 }
 
