@@ -28,15 +28,18 @@ import (
 )
 
 var rss1 = pan.RSS{
+	Version: "2.0",
 	Channel: channel1,
 }
 
 var rss2 = pan.RSS{
+	Version: "2.0",
 	Channel: channel2,
 }
 
 func TestRSSEqual(t *testing.T) {
 	rssEqual := pan.RSS{
+		Version: rss1.Version,
 		Channel: rss1.Channel,
 	}
 	if !rss1.Equal(rssEqual) {
@@ -55,7 +58,7 @@ var rssFixtures = []fixture{
 	},
 }
 
-func TestRSS(t *testing.T) {
+func TestRSSUnmarshalYAML(t *testing.T) {
 	for _, fixture := range rssFixtures {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
