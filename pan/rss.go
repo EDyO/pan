@@ -20,18 +20,60 @@ package pan
 
 import (
 	"encoding/xml"
+	"fmt"
+	"strconv"
 )
 
 // RSS represents a RSS Feed.
 type RSS struct {
 	XMLName xml.Name `xml:"rss"`
-	Channel Channel
+	Version string   `xml:"version,attr"`
+	Channel Channel  `yaml:"channel"`
 }
 
 // Equal returns true if rss is equal to r, false otherwise.
 func (r *RSS) Equal(rss RSS) bool {
-	if !r.Channel.Equal(rss.Channel) {
+	if r.Version != rss.Version ||
+		!r.Channel.Equal(rss.Channel) {
 		return false
 	}
 	return true
+}
+
+// UnmarshalYAML is the unmarshaler for RSS.
+func (r *RSS) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
+	var rss map[string]interface{}
+	if err = unmarshal(&rss); err != nil {
+		return
+	}
+	attributes := rss["attributes"].(map[interface{}]interface{})
+	r.Version = fmt.Sprintf("%.1f", attributes["version"].(float64))
+	channel := rss["channel"].(map[interface{}]interface{})
+	r.Channel = Channel{
+		Title:       channel["title"].(string),
+		Link:        channel["link"].(string),
+		Language:    channel["language"].(string),
+		Copyright:   channel["copyright"].(string),
+		Description: channel["description"].(string),
+		Items:       []Item{},
+	}
+	for _, itemElement := range channel["items"].([]interface{}) {
+		itemMap := itemElement.(map[interface{}]interface{})
+		enclosure := itemMap["enclosure"].(map[interface{}]interface{})
+		enclosureAttrs := enclosure["attributes"].(map[interface{}]interface{})
+		item := Item{
+			Title:       itemMap["title"].(string),
+			Link:        itemMap["link"].(string),
+			GUID:        itemMap["link"].(string),
+			Description: itemMap["description"].(string),
+			PubDate:     itemMap["pubDate"].(string),
+			Enclosure: Enclosure{
+				Length: strconv.Itoa(enclosureAttrs["length"].(int)),
+				Type:   enclosureAttrs["type"].(string),
+				URL:    enclosureAttrs["url"].(string),
+			},
+		}
+		r.Channel.Items = append(r.Channel.Items, item)
+	}
+	return
 }
