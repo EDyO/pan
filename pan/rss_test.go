@@ -28,6 +28,7 @@ import (
 )
 
 var rss1 = pan.RSS{
+	AtomNS:  "http://www.w3.org/2005/Atom",
 	Version: "2.0",
 	Channel: channel1,
 }
@@ -39,6 +40,7 @@ var rss2 = pan.RSS{
 
 func TestRSSEqual(t *testing.T) {
 	rssEqual := pan.RSS{
+		AtomNS:  rss1.AtomNS,
 		Version: rss1.Version,
 		Channel: rss1.Channel,
 	}
