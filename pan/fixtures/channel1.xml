@@ -5,4 +5,12 @@
   <language>en-us</language>
   <copyright>creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US</copyright>
   <description>This podcast is about something</description>
+  <item>
+    <title>This is the title of the episode</title>
+    <link>http://link.to/episode1.mp3</link>
+    <guid>http://link.to/episode1.mp3</guid>
+    <description>Small summary of the episode</description>
+    <pubDate>Sun, 26 Jan 2014 23:00:00 +0000</pubDate>
+    <enclosure length="234875" type="audio/mpeg" url="http://link.to/episode1.mp3"></enclosure>
+  </item>
 </channel>

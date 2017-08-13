@@ -33,6 +33,7 @@ var channel1 = pan.Channel{
 	Language:    "en-us",
 	Copyright:   "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
 	Description: "This podcast is about something",
+	Items:       []pan.Item{item1},
 }
 
 var channel2 = pan.Channel{
@@ -50,6 +51,7 @@ func TestChannelEqual(t *testing.T) {
 		Language:    channel1.Language,
 		Copyright:   channel1.Copyright,
 		Description: channel1.Description,
+		Items:       channel1.Items,
 	}
 	if !channel1.Equal(channelEqual) {
 		t.Errorf("Channels should be equal:\n%s\n%s", channel1, channelEqual)
