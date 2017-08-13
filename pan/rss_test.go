@@ -19,6 +19,7 @@
 package pan_test
 
 import (
+	"encoding/xml"
 	"testing"
 
 	"gopkg.in/yaml.v2"
@@ -74,6 +75,34 @@ func TestRSS(t *testing.T) {
 				err := yaml.Unmarshal([]byte(content), &rss)
 				check(err)
 				fixture.checkFail(rss, t)
+			},
+		)
+	}
+}
+
+func TestRSSMarshalXML(t *testing.T) {
+	for _, fixture := range rssFixtures {
+		content := fixture.load("xml")
+		fixture.checkFail = func(result interface{}, t *testing.T) {
+			if content != result.(string) {
+				t.Errorf(
+					"XML strings should be equal:\n%s\n%s",
+					content,
+					result,
+				)
+			}
+		}
+		t.Run(
+			fixture.desc,
+			func(t *testing.T) {
+				b, err := xml.MarshalIndent(
+					&fixture.result,
+					"",
+					"  ",
+				)
+				check(err)
+				result := xml.Header + string(b) + "\n"
+				fixture.checkFail(result, t)
 			},
 		)
 	}

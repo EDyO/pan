@@ -18,8 +18,13 @@
 
 package pan
 
+import (
+	"encoding/xml"
+)
+
 // RSS represents a RSS Feed.
 type RSS struct {
+	XMLName xml.Name `xml:"rss"`
 	Channel Channel
 }
 
