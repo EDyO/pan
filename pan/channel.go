@@ -30,6 +30,7 @@ type Channel struct {
 	Language    string   `xml:"language"`
 	Copyright   string   `xml:"copyright"`
 	Description string   `xml:"description"`
+	Items       []Item   `yaml:"items"`
 }
 
 // Equal returns true if channel is equal to c, false otherwise.
@@ -40,6 +41,15 @@ func (c *Channel) Equal(channel Channel) bool {
 		c.Copyright != channel.Copyright ||
 		c.Description != channel.Description {
 		return false
+	}
+	if c.Items == nil && channel.Items != nil ||
+		c.Items != nil && channel.Items == nil {
+		return false
+	}
+	for i, item := range c.Items {
+		if !item.Equal(channel.Items[i]) {
+			return false
+		}
 	}
 	return true
 }

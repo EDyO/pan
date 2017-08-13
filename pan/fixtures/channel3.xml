@@ -13,4 +13,12 @@
     <pubDate>Sun, 26 Jan 2014 23:00:00 +0000</pubDate>
     <enclosure length="234875" type="audio/mpeg" url="http://link.to/episode1.mp3"></enclosure>
   </item>
+  <item>
+    <title>This is the title of another episode</title>
+    <link>http://link.to/episode2.mp3</link>
+    <guid>http://link.to/episode2.mp3</guid>
+    <description>Small summary of the second episode</description>
+    <pubDate>Sun, 26 Feb 2014 23:00:00 +0000</pubDate>
+    <enclosure length="4805409" type="audio/mpeg" url="http://link.to/episode2.mp3"></enclosure>
+  </item>
 </channel>
