@@ -24,13 +24,14 @@ import (
 
 // Channel represents each episode.
 type Channel struct {
-	XMLName     xml.Name `xml:"channel"`
-	Title       string   `xml:"title"`
-	Link        string   `xml:"link"`
-	Language    string   `xml:"language"`
-	Copyright   string   `xml:"copyright"`
-	Description string   `xml:"description"`
-	Items       []Item   `yaml:"items"`
+	XMLName     xml.Name  `xml:"channel"`
+	AtomLink    *AtomLink `yaml:"atom_link" xml:"atom:link,omitempty"`
+	Title       string    `xml:"title"`
+	Link        string    `xml:"link"`
+	Language    string    `xml:"language"`
+	Copyright   string    `xml:"copyright"`
+	Description string    `xml:"description"`
+	Items       []Item    `yaml:"items"`
 }
 
 // Equal returns true if channel is equal to c, false otherwise.
@@ -40,6 +41,14 @@ func (c *Channel) Equal(channel Channel) bool {
 		c.Language != channel.Language ||
 		c.Copyright != channel.Copyright ||
 		c.Description != channel.Description {
+		return false
+	}
+	if c.AtomLink == nil && channel.AtomLink != nil ||
+		c.AtomLink != nil && channel.AtomLink == nil {
+		return false
+	}
+	if c.AtomLink != channel.AtomLink &&
+		!(*c.AtomLink).Equal(*channel.AtomLink) {
 		return false
 	}
 	if c.Items == nil && channel.Items != nil ||

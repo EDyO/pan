@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
+    <atom:link href="http://link.to/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <title>Something Podcast</title>
     <link>http://link.to</link>
     <language>en-us</language>

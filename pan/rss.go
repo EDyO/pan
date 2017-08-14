@@ -57,7 +57,14 @@ func (r *RSS) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 		}
 	}
 	channel := rss["channel"].(map[interface{}]interface{})
+	atomLinkMap := channel["atom_link"].(map[interface{}]interface{})
+	atomLink := AtomLink{
+		Href: atomLinkMap["href"].(string),
+		Rel:  atomLinkMap["rel"].(string),
+		Type: atomLinkMap["type"].(string),
+	}
 	r.Channel = Channel{
+		AtomLink:    &atomLink,
 		Title:       channel["title"].(string),
 		Link:        channel["link"].(string),
 		Language:    channel["language"].(string),
