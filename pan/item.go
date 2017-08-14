@@ -20,7 +20,6 @@ package pan
 
 import (
 	"encoding/xml"
-	"strconv"
 )
 
 // Item represents each episode.
@@ -59,14 +58,9 @@ func (i *Item) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	i.Description = item["description"].(string)
 	i.PubDate = item["pubDate"].(string)
 	enclosure := item["enclosure"].(map[interface{}]interface{})
-	attributes := enclosure["attributes"].(map[interface{}]interface{})
-	if _, ok := attributes["url"]; !ok {
-		attributes["url"] = i.Link
-	}
-	i.Enclosure = Enclosure{
-		Length: strconv.Itoa(attributes["length"].(int)),
-		Type:   attributes["type"].(string),
-		URL:    attributes["url"].(string),
+	i.Enclosure = EnclosureFromMap(enclosure)
+	if i.Enclosure.URL == "" {
+		i.Enclosure.URL = i.Link
 	}
 	return
 }

@@ -23,6 +23,19 @@ import (
 	"strconv"
 )
 
+// EnclosureFromMap is an Enclosure factory from map[interface{}]interface{}.
+func EnclosureFromMap(enclosureMap map[interface{}]interface{}) Enclosure {
+	attributes := enclosureMap["attributes"].(map[interface{}]interface{})
+	if attributes["url"] == nil {
+		attributes["url"] = ""
+	}
+	return Enclosure{
+		Length: strconv.Itoa(attributes["length"].(int)),
+		Type:   attributes["type"].(string),
+		URL:    attributes["url"].(string),
+	}
+}
+
 // Enclosure represents the definition of the resource shared.
 type Enclosure struct {
 	XMLName xml.Name `xml:"enclosure"`
@@ -43,13 +56,13 @@ func (e *Enclosure) Equal(enclosure Enclosure) bool {
 
 // UnmarshalYAML is the unmarshaler for Enclosure.
 func (e *Enclosure) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
-	var enclosure map[string]interface{}
-	if err = unmarshal(&enclosure); err != nil {
+	var enclosureMap map[interface{}]interface{}
+	if err = unmarshal(&enclosureMap); err != nil {
 		return
 	}
-	attributes := enclosure["attributes"].(map[interface{}]interface{})
-	e.Length = strconv.Itoa(attributes["length"].(int))
-	e.Type = attributes["type"].(string)
-	e.URL = attributes["url"].(string)
+	enclosure := EnclosureFromMap(enclosureMap)
+	e.Length = enclosure.Length
+	e.Type = enclosure.Type
+	e.URL = enclosure.URL
 	return
 }
