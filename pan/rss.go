@@ -27,6 +27,7 @@ import (
 // RSS represents a RSS Feed.
 type RSS struct {
 	XMLName xml.Name `xml:"rss"`
+	AtomNS  string   `xml:"xmlns:atom,attr"`
 	Version string   `xml:"version,attr"`
 	Channel Channel  `yaml:"channel"`
 }
@@ -34,6 +35,7 @@ type RSS struct {
 // Equal returns true if rss is equal to r, false otherwise.
 func (r *RSS) Equal(rss RSS) bool {
 	if r.Version != rss.Version ||
+		r.AtomNS != rss.AtomNS ||
 		!r.Channel.Equal(rss.Channel) {
 		return false
 	}
@@ -48,8 +50,21 @@ func (r *RSS) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	}
 	attributes := rss["attributes"].(map[interface{}]interface{})
 	r.Version = fmt.Sprintf("%.1f", attributes["version"].(float64))
+	namespaces := rss["namespaces"].(map[interface{}]interface{})
+	for key, content := range namespaces {
+		if key == "atom" {
+			r.AtomNS = content.(string)
+		}
+	}
 	channel := rss["channel"].(map[interface{}]interface{})
+	atomLinkMap := channel["atom_link"].(map[interface{}]interface{})
+	atomLink := AtomLink{
+		Href: atomLinkMap["href"].(string),
+		Rel:  atomLinkMap["rel"].(string),
+		Type: atomLinkMap["type"].(string),
+	}
 	r.Channel = Channel{
+		AtomLink:    &atomLink,
 		Title:       channel["title"].(string),
 		Link:        channel["link"].(string),
 		Language:    channel["language"].(string),

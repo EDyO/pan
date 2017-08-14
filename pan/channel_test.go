@@ -28,6 +28,7 @@ import (
 )
 
 var channel1 = pan.Channel{
+	AtomLink:    &atom1,
 	Title:       "Something Podcast",
 	Link:        "http://link.to",
 	Language:    "en-us",
@@ -56,8 +57,19 @@ var channel3 = pan.Channel{
 	},
 }
 
+var channel4 = pan.Channel{
+	AtomLink:    &atom2,
+	Title:       "Something Podcast",
+	Link:        "http://link.to",
+	Language:    "en-us",
+	Copyright:   "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
+	Description: "This podcast is about something",
+	Items:       []pan.Item{item1},
+}
+
 func TestChannelEqual(t *testing.T) {
 	channelEqual := pan.Channel{
+		AtomLink:    channel1.AtomLink,
 		Title:       channel1.Title,
 		Link:        channel1.Link,
 		Language:    channel1.Language,
@@ -70,6 +82,9 @@ func TestChannelEqual(t *testing.T) {
 	}
 	if channel1.Equal(channel2) {
 		t.Errorf("Channels should not be equal:\n%s\n%s", channel1, channel2)
+	}
+	if channel1.Equal(channel4) {
+		t.Errorf("Channels should not be equal:\n%s\n%s", channel1, channel4)
 	}
 }
 

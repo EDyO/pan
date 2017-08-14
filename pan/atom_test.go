@@ -27,48 +27,49 @@ import (
 	"github.com/EDyO/pan/pan"
 )
 
-var rss1 = pan.RSS{
-	AtomNS:  "http://www.w3.org/2005/Atom",
-	Version: "2.0",
-	Channel: channel1,
+var atom1 = pan.AtomLink{
+	Href: "http://link.to/feed.xml",
+	Rel:  "self",
+	Type: "application/rss+xml",
 }
 
-var rss2 = pan.RSS{
-	Version: "2.0",
-	Channel: channel2,
+var atom2 = pan.AtomLink{
+	Href: "http://link2.to/another_feed.xml",
+	Rel:  "self",
+	Type: "application/rss+xml",
 }
 
-func TestRSSEqual(t *testing.T) {
-	rssEqual := pan.RSS{
-		AtomNS:  rss1.AtomNS,
-		Version: rss1.Version,
-		Channel: rss1.Channel,
+func TestAtomLinkEqual(t *testing.T) {
+	atomEqual := pan.AtomLink{
+		Href: atom1.Href,
+		Rel:  atom1.Rel,
+		Type: atom1.Type,
 	}
-	if !rss1.Equal(rssEqual) {
-		t.Errorf("RSSs should be equal:\n%s\n%s", rss1, rssEqual)
+	if !atom1.Equal(atomEqual) {
+		t.Errorf("Atoms should be equal:\n%s\n%s", atom1, atomEqual)
 	}
-	if rss1.Equal(rss2) {
-		t.Errorf("RSSs should not be equal:\n%s\n%s", rss1, rss2)
+	if atom1.Equal(atom2) {
+		t.Errorf("Atoms should not be equal:\n%s\n%s", atom1, atom2)
 	}
 }
 
-var rssFixtures = []fixture{
+var atomFixtures = []fixture{
 	{
-		name:   "rss1",
-		desc:   "Simple RSS",
-		result: rss1,
+		name:   "atom1",
+		desc:   "Simple atom",
+		result: atom1,
 	},
 }
 
-func TestRSSUnmarshalYAML(t *testing.T) {
-	for _, fixture := range rssFixtures {
+func TestAtomLinkUnmarshalYAML(t *testing.T) {
+	for _, fixture := range atomFixtures {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
-			rss := fixture.result.(pan.RSS)
-			if !rss.Equal(result.(pan.RSS)) {
+			atom := fixture.result.(pan.AtomLink)
+			if !atom.Equal(result.(pan.AtomLink)) {
 				t.Errorf(
-					"Loaded RSSs should be equal:\n%s\n%s",
-					rss,
+					"Loaded atoms should be equal:\n%s\n%s",
+					atom,
 					result,
 				)
 			}
@@ -76,17 +77,17 @@ func TestRSSUnmarshalYAML(t *testing.T) {
 		t.Run(
 			fixture.desc,
 			func(t *testing.T) {
-				rss := pan.RSS{}
-				err := yaml.Unmarshal([]byte(content), &rss)
+				atom := pan.AtomLink{}
+				err := yaml.Unmarshal([]byte(content), &atom)
 				check(err)
-				fixture.checkFail(rss, t)
+				fixture.checkFail(atom, t)
 			},
 		)
 	}
 }
 
-func TestRSSMarshalXML(t *testing.T) {
-	for _, fixture := range rssFixtures {
+func TestAtomLinkMarshalXML(t *testing.T) {
+	for _, fixture := range atomFixtures {
 		content := fixture.load("xml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			if content != result.(string) {
