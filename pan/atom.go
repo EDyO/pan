@@ -30,6 +30,16 @@ type AtomLink struct {
 	Type    string   `xml:"type,attr"`
 }
 
+// AtomLinkFromMap is an AtomLink factory from map[interface{}]interface{}.
+func AtomLinkFromMap(atomLinkMap map[interface{}]interface{}) AtomLink {
+	attributes := atomLinkMap["attributes"].(map[interface{}]interface{})
+	return AtomLink{
+		Href: attributes["href"].(string),
+		Rel:  attributes["rel"].(string),
+		Type: attributes["type"].(string),
+	}
+}
+
 // Equal returns true if atomLink is equal to a, false otherwise.
 func (a *AtomLink) Equal(atomLink AtomLink) bool {
 	if a.Href != atomLink.Href ||
