@@ -33,6 +33,23 @@ type Item struct {
 	Enclosure   Enclosure
 }
 
+// ItemFromMap is an Item factory from a map[interface{}]interface{}.
+func ItemFromMap(itemMap map[interface{}]interface{}) Item {
+	enclosureMap := itemMap["enclosure"].(map[interface{}]interface{})
+	enclosure := EnclosureFromMap(enclosureMap)
+	if enclosure.URL == "" {
+		enclosure.URL = itemMap["link"].(string)
+	}
+	return Item{
+		Title:       itemMap["title"].(string),
+		Link:        itemMap["link"].(string),
+		GUID:        itemMap["link"].(string),
+		Description: itemMap["description"].(string),
+		PubDate:     itemMap["pubDate"].(string),
+		Enclosure:   enclosure,
+	}
+}
+
 // Equal returns true if item2 is equal to i, false otherwise.
 func (i *Item) Equal(item Item) bool {
 	if i.Title != item.Title ||
@@ -48,19 +65,16 @@ func (i *Item) Equal(item Item) bool {
 
 // UnmarshalYAML is the unmarshaler for Item.
 func (i *Item) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
-	var item map[string]interface{}
-	if err = unmarshal(&item); err != nil {
+	var itemMap map[interface{}]interface{}
+	if err = unmarshal(&itemMap); err != nil {
 		return
 	}
-	i.Title = item["title"].(string)
-	i.Link = item["link"].(string)
-	i.GUID = item["link"].(string)
-	i.Description = item["description"].(string)
-	i.PubDate = item["pubDate"].(string)
-	enclosure := item["enclosure"].(map[interface{}]interface{})
-	i.Enclosure = EnclosureFromMap(enclosure)
-	if i.Enclosure.URL == "" {
-		i.Enclosure.URL = i.Link
-	}
+	item := ItemFromMap(itemMap)
+	i.Title = item.Title
+	i.Link = item.Link
+	i.GUID = item.GUID
+	i.Description = item.Description
+	i.PubDate = item.PubDate
+	i.Enclosure = item.Enclosure
 	return
 }

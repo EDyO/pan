@@ -152,3 +152,23 @@ func TestItemMarshalXML(t *testing.T) {
 		)
 	}
 }
+
+var itemMap1 = map[interface{}]interface{}{
+	"title":       "This is the title of the episode",
+	"link":        "http://link.to/episode1.mp3",
+	"guid":        "http://link.to/episode1.mp3",
+	"description": "Small summary of the episode",
+	"pubDate":     "Sun, 26 Jan 2014 23:00:00 +0000",
+	"enclosure":   enclosureMap1,
+}
+
+func TestItemFromMap(t *testing.T) {
+	item := pan.ItemFromMap(itemMap1)
+	if !item1.Equal(item) {
+		t.Errorf(
+			"%s should be equal to %s",
+			item,
+			item1,
+		)
+	}
+}
