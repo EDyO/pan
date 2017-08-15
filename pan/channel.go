@@ -24,18 +24,19 @@ import (
 
 // Channel represents each episode.
 type Channel struct {
-	XMLName        xml.Name  `xml:"channel"`
-	AtomLink       *AtomLink `yaml:"atom_link" xml:"atom:link,omitempty"`
-	ITunesSubtitle string    `yaml:"itunes_subtitle" xml:"itunes:subtitle,omitempty"`
-	ITunesAuthor   string    `yaml:"itunes_author" xml:"itunes:author,omitempty"`
-	ITunesExplicit string    `yaml:"itunes_explicit" xml:"itunes:explicit,omitempty"`
-	ITunesSummary  string    `yaml:"itunes_summary" xml:"itunes:summary,omitempty"`
-	Title          string    `xml:"title"`
-	Link           string    `xml:"link"`
-	Language       string    `xml:"language"`
-	Copyright      string    `xml:"copyright"`
-	Description    string    `xml:"description"`
-	Items          []Item    `yaml:"items"`
+	XMLName        xml.Name     `xml:"channel"`
+	AtomLink       *AtomLink    `yaml:"atom_link" xml:"atom:link,omitempty"`
+	ITunesSubtitle string       `yaml:"itunes_subtitle" xml:"itunes:subtitle,omitempty"`
+	ITunesAuthor   string       `yaml:"itunes_author" xml:"itunes:author,omitempty"`
+	ITunesExplicit string       `yaml:"itunes_explicit" xml:"itunes:explicit,omitempty"`
+	ITunesSummary  string       `yaml:"itunes_summary" xml:"itunes:summary,omitempty"`
+	ITunesImage    *ITunesImage `yaml:"itunes_image" xml:"itunes:image,omitempty"`
+	Title          string       `xml:"title"`
+	Link           string       `xml:"link"`
+	Language       string       `xml:"language"`
+	Copyright      string       `xml:"copyright"`
+	Description    string       `xml:"description"`
+	Items          []Item       `yaml:"items"`
 }
 
 // ChannelFromMap is a Channel factory form map[interface{}]interface{}.
@@ -55,12 +56,18 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 	if channelMap["itunes_explicit"].(bool) {
 		explicit = "Yes"
 	}
+	iTunesImage := ITunesImage{}
+	if channelMap["itunes_image"] != nil {
+		iTunesImageMap := channelMap["itunes_image"].(map[interface{}]interface{})
+		iTunesImage = ITunesImageFromMap(iTunesImageMap)
+	}
 	return Channel{
 		AtomLink:       &atomLink,
 		ITunesSubtitle: channelMap["itunes_subtitle"].(string),
 		ITunesAuthor:   channelMap["itunes_author"].(string),
 		ITunesExplicit: explicit,
 		ITunesSummary:  channelMap["itunes_summary"].(string),
+		ITunesImage:    &iTunesImage,
 		Title:          channelMap["title"].(string),
 		Link:           channelMap["link"].(string),
 		Language:       channelMap["language"].(string),
