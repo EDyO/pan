@@ -28,6 +28,7 @@ type Channel struct {
 	AtomLink       *AtomLink `yaml:"atom_link" xml:"atom:link,omitempty"`
 	ITunesSubtitle string    `yaml:"itunes_subtitle" xml:"itunes:subtitle,omitempty"`
 	ITunesAuthor   string    `yaml:"itunes_author" xml:"itunes:author,omitempty"`
+	ITunesExplicit string    `yaml:"itunes_explicit" xml:"itunes:explicit,omitempty"`
 	Title          string    `xml:"title"`
 	Link           string    `xml:"link"`
 	Language       string    `xml:"language"`
@@ -49,10 +50,15 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 		item := ItemFromMap(itemMap.(map[interface{}]interface{}))
 		items = append(items, item)
 	}
+	explicit := "No"
+	if channelMap["itunes_explicit"].(bool) {
+		explicit = "Yes"
+	}
 	return Channel{
 		AtomLink:       &atomLink,
 		ITunesSubtitle: channelMap["itunes_subtitle"].(string),
 		ITunesAuthor:   channelMap["itunes_author"].(string),
+		ITunesExplicit: explicit,
 		Title:          channelMap["title"].(string),
 		Link:           channelMap["link"].(string),
 		Language:       channelMap["language"].(string),

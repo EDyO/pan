@@ -10,6 +10,7 @@ atom_link:
     type: application/rss+xml
 itunes_subtitle: When something means something
 itunes_author: Somebody
+itunes_explicit: No
 items:
 - title: This is the title of the episode
   link: http://link.to/episode1.mp3

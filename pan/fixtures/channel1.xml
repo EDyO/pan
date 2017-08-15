@@ -3,6 +3,7 @@
   <atom:link href="http://link.to/feed.xml" rel="self" type="application/rss+xml"></atom:link>
   <itunes:subtitle>When something means something</itunes:subtitle>
   <itunes:author>Somebody</itunes:author>
+  <itunes:explicit>No</itunes:explicit>
   <title>Something Podcast</title>
   <link>http://link.to</link>
   <language>en-us</language>
