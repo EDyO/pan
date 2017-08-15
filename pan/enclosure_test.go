@@ -113,3 +113,22 @@ func TestEnclosureMarshalXML(t *testing.T) {
 		)
 	}
 }
+
+var enclosureMap1 = map[interface{}]interface{}{
+	"attributes": map[interface{}]interface{}{
+		"length": 234875,
+		"type":   "audio/mpeg",
+		"url":    "http://link.to/episode1.mp3",
+	},
+}
+
+func TestEnclosureFromMap(t *testing.T) {
+	enclosure := pan.EnclosureFromMap(enclosureMap1)
+	if !enclosure1.Equal(enclosure) {
+		t.Errorf(
+			"%s should be equal to %s",
+			enclosure,
+			enclosure1,
+		)
+	}
+}

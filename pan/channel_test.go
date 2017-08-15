@@ -153,3 +153,24 @@ func TestChannelMarshalXML(t *testing.T) {
 		)
 	}
 }
+
+var channelMap1 = map[interface{}]interface{}{
+	"atom_link":   atomMap1,
+	"title":       "Something Podcast",
+	"link":        "http://link.to",
+	"language":    "en-us",
+	"copyright":   "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
+	"description": "This podcast is about something",
+	"items":       []interface{}{itemMap1},
+}
+
+func TestChannelFromMap(t *testing.T) {
+	channel := pan.ChannelFromMap(channelMap1)
+	if !channel1.Equal(channel) {
+		t.Errorf(
+			"%s should be equal to %s",
+			channel,
+			channel1,
+		)
+	}
+}

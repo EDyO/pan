@@ -113,3 +113,20 @@ func TestAtomLinkMarshalXML(t *testing.T) {
 		)
 	}
 }
+
+var atomMap1 = map[interface{}]interface{}{
+	"href": "http://link.to/feed.xml",
+	"rel":  "self",
+	"type": "application/rss+xml",
+}
+
+func TestAtomLinkFromMap(t *testing.T) {
+	atom := pan.AtomLinkFromMap(atomMap1)
+	if !atom1.Equal(atom) {
+		t.Errorf(
+			"%s should be equal to %s",
+			atom,
+			atom1,
+		)
+	}
+}

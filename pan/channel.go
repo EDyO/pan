@@ -34,6 +34,27 @@ type Channel struct {
 	Items       []Item    `yaml:"items"`
 }
 
+// ChannelFromMap is a Channel factory form map[interface{}]interface{}.
+func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
+	atomLinkMap := channelMap["atom_link"].(map[interface{}]interface{})
+	atomLink := AtomLinkFromMap(atomLinkMap)
+	items := []Item{}
+	itemsList := channelMap["items"].([]interface{})
+	for _, itemMap := range itemsList {
+		item := ItemFromMap(itemMap.(map[interface{}]interface{}))
+		items = append(items, item)
+	}
+	return Channel{
+		AtomLink:    &atomLink,
+		Title:       channelMap["title"].(string),
+		Link:        channelMap["link"].(string),
+		Language:    channelMap["language"].(string),
+		Copyright:   channelMap["copyright"].(string),
+		Description: channelMap["description"].(string),
+		Items:       items,
+	}
+}
+
 // Equal returns true if channel is equal to c, false otherwise.
 func (c *Channel) Equal(channel Channel) bool {
 	if c.Title != channel.Title ||
