@@ -24,14 +24,15 @@ import (
 
 // Channel represents each episode.
 type Channel struct {
-	XMLName     xml.Name  `xml:"channel"`
-	AtomLink    *AtomLink `yaml:"atom_link" xml:"atom:link,omitempty"`
-	Title       string    `xml:"title"`
-	Link        string    `xml:"link"`
-	Language    string    `xml:"language"`
-	Copyright   string    `xml:"copyright"`
-	Description string    `xml:"description"`
-	Items       []Item    `yaml:"items"`
+	XMLName        xml.Name  `xml:"channel"`
+	AtomLink       *AtomLink `yaml:"atom_link" xml:"atom:link,omitempty"`
+	ITunesSubtitle string    `yaml:"itunes_subtitle" xml:"itunes:subtitle,omitempty"`
+	Title          string    `xml:"title"`
+	Link           string    `xml:"link"`
+	Language       string    `xml:"language"`
+	Copyright      string    `xml:"copyright"`
+	Description    string    `xml:"description"`
+	Items          []Item    `yaml:"items"`
 }
 
 // ChannelFromMap is a Channel factory form map[interface{}]interface{}.
@@ -48,12 +49,13 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 		items = append(items, item)
 	}
 	return Channel{
-		AtomLink:    &atomLink,
-		Title:       channelMap["title"].(string),
-		Link:        channelMap["link"].(string),
-		Language:    channelMap["language"].(string),
-		Copyright:   channelMap["copyright"].(string),
-		Description: channelMap["description"].(string),
-		Items:       items,
+		AtomLink:       &atomLink,
+		ITunesSubtitle: channelMap["itunes_subtitle"].(string),
+		Title:          channelMap["title"].(string),
+		Link:           channelMap["link"].(string),
+		Language:       channelMap["language"].(string),
+		Copyright:      channelMap["copyright"].(string),
+		Description:    channelMap["description"].(string),
+		Items:          items,
 	}
 }

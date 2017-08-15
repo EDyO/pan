@@ -8,6 +8,7 @@ atom_link:
     href: http://link.to/feed.xml
     rel: self
     type: application/rss+xml
+itunes_subtitle: When something means something
 items:
 - title: This is the title of the episode
   link: http://link.to/episode1.mp3
