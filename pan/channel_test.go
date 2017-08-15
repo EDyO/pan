@@ -29,7 +29,7 @@ import (
 )
 
 var channel1 = pan.Channel{
-	AtomLink:    &atom1,
+	AtomLink:    &atomLink1,
 	Title:       "Something Podcast",
 	Link:        "http://link.to",
 	Language:    "en-us",
@@ -59,7 +59,7 @@ var channel3 = pan.Channel{
 }
 
 var channel4 = pan.Channel{
-	AtomLink:    &atom2,
+	AtomLink:    &atomLink2,
 	Title:       "Something Podcast",
 	Link:        "http://link.to",
 	Language:    "en-us",
@@ -135,7 +135,7 @@ func TestChannelMarshalXML(t *testing.T) {
 }
 
 var channelMap1 = map[interface{}]interface{}{
-	"atom_link":   atomMap1,
+	"atom_link":   atomLinkMap1,
 	"title":       "Something Podcast",
 	"link":        "http://link.to",
 	"language":    "en-us",

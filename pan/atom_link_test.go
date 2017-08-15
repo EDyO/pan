@@ -28,35 +28,35 @@ import (
 	"github.com/EDyO/pan/pan"
 )
 
-var atom1 = pan.AtomLink{
+var atomLink1 = pan.AtomLink{
 	Href: "http://link.to/feed.xml",
 	Rel:  "self",
 	Type: "application/rss+xml",
 }
 
-var atom2 = pan.AtomLink{
+var atomLink2 = pan.AtomLink{
 	Href: "http://link2.to/another_feed.xml",
 	Rel:  "self",
 	Type: "application/rss+xml",
 }
 
-var atomFixtures = []fixture{
+var atomLinkFixtures = []fixture{
 	{
-		name:   "atom1",
-		desc:   "Simple atom",
-		result: atom1,
+		name:   "atom_link1",
+		desc:   "Simple atom:link",
+		result: atomLink1,
 	},
 }
 
 func TestAtomLinkUnmarshalYAML(t *testing.T) {
-	for _, fixture := range atomFixtures {
+	for _, fixture := range atomLinkFixtures {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
-			atom := fixture.result.(pan.AtomLink)
-			if diff := deep.Equal(atom, result.(pan.AtomLink)); diff != nil {
+			atomLink := fixture.result.(pan.AtomLink)
+			if diff := deep.Equal(atomLink, result.(pan.AtomLink)); diff != nil {
 				t.Errorf(
-					"Loaded atoms should be equal:\n%s\n%s",
-					atom,
+					"Loaded atom:links should be equal:\n%s\n%s",
+					atomLink,
 					result,
 				)
 			}
@@ -64,17 +64,17 @@ func TestAtomLinkUnmarshalYAML(t *testing.T) {
 		t.Run(
 			fixture.desc,
 			func(t *testing.T) {
-				atom := pan.AtomLink{}
-				err := yaml.Unmarshal([]byte(content), &atom)
+				atomLink := pan.AtomLink{}
+				err := yaml.Unmarshal([]byte(content), &atomLink)
 				check(err)
-				fixture.checkFail(atom, t)
+				fixture.checkFail(atomLink, t)
 			},
 		)
 	}
 }
 
 func TestAtomLinkMarshalXML(t *testing.T) {
-	for _, fixture := range atomFixtures {
+	for _, fixture := range atomLinkFixtures {
 		content := fixture.load("xml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			if content != result.(string) {
@@ -101,19 +101,19 @@ func TestAtomLinkMarshalXML(t *testing.T) {
 	}
 }
 
-var atomMap1 = map[interface{}]interface{}{
+var atomLinkMap1 = map[interface{}]interface{}{
 	"href": "http://link.to/feed.xml",
 	"rel":  "self",
 	"type": "application/rss+xml",
 }
 
 func TestAtomLinkFromMap(t *testing.T) {
-	atom := pan.AtomLinkFromMap(atomMap1)
-	if diff := deep.Equal(atom, atom1); diff != nil {
+	atomLink := pan.AtomLinkFromMap(atomLinkMap1)
+	if diff := deep.Equal(atomLink, atomLink1); diff != nil {
 		t.Errorf(
 			"%s should be equal to %s",
-			atom,
-			atom1,
+			atomLink,
+			atomLink1,
 		)
 	}
 }
