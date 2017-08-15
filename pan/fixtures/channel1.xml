@@ -4,6 +4,7 @@
   <itunes:subtitle>When something means something</itunes:subtitle>
   <itunes:author>Somebody</itunes:author>
   <itunes:explicit>No</itunes:explicit>
+  <itunes:summary>This podcast is about something</itunes:summary>
   <title>Something Podcast</title>
   <link>http://link.to</link>
   <language>en-us</language>

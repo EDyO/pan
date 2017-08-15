@@ -11,6 +11,7 @@ atom_link:
 itunes_subtitle: When something means something
 itunes_author: Somebody
 itunes_explicit: No
+itunes_summary: This podcast is about something
 items:
 - title: This is the title of the episode
   link: http://link.to/episode1.mp3

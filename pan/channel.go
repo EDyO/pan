@@ -29,6 +29,7 @@ type Channel struct {
 	ITunesSubtitle string    `yaml:"itunes_subtitle" xml:"itunes:subtitle,omitempty"`
 	ITunesAuthor   string    `yaml:"itunes_author" xml:"itunes:author,omitempty"`
 	ITunesExplicit string    `yaml:"itunes_explicit" xml:"itunes:explicit,omitempty"`
+	ITunesSummary  string    `yaml:"itunes_summary" xml:"itunes:summary,omitempty"`
 	Title          string    `xml:"title"`
 	Link           string    `xml:"link"`
 	Language       string    `xml:"language"`
@@ -59,6 +60,7 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 		ITunesSubtitle: channelMap["itunes_subtitle"].(string),
 		ITunesAuthor:   channelMap["itunes_author"].(string),
 		ITunesExplicit: explicit,
+		ITunesSummary:  channelMap["itunes_summary"].(string),
 		Title:          channelMap["title"].(string),
 		Link:           channelMap["link"].(string),
 		Language:       channelMap["language"].(string),
