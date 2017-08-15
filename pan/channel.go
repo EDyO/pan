@@ -54,32 +54,3 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 		Items:       items,
 	}
 }
-
-// Equal returns true if channel is equal to c, false otherwise.
-func (c *Channel) Equal(channel Channel) bool {
-	if c.Title != channel.Title ||
-		c.Link != channel.Link ||
-		c.Language != channel.Language ||
-		c.Copyright != channel.Copyright ||
-		c.Description != channel.Description {
-		return false
-	}
-	if c.AtomLink == nil && channel.AtomLink != nil ||
-		c.AtomLink != nil && channel.AtomLink == nil {
-		return false
-	}
-	if c.AtomLink != channel.AtomLink &&
-		!(*c.AtomLink).Equal(*channel.AtomLink) {
-		return false
-	}
-	if c.Items == nil && channel.Items != nil ||
-		c.Items != nil && channel.Items == nil {
-		return false
-	}
-	for i, item := range c.Items {
-		if !item.Equal(channel.Items[i]) {
-			return false
-		}
-	}
-	return true
-}

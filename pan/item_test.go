@@ -22,6 +22,7 @@ import (
 	"encoding/xml"
 	"testing"
 
+	"github.com/go-test/deep"
 	"gopkg.in/yaml.v2"
 
 	"github.com/EDyO/pan/pan"
@@ -67,26 +68,6 @@ var item4 = pan.Item{
 	},
 }
 
-func TestItemEqual(t *testing.T) {
-	itemEqual := pan.Item{
-		Title:       item1.Title,
-		Link:        item1.Link,
-		GUID:        item1.Link,
-		Description: item1.Description,
-		PubDate:     item1.PubDate,
-		Enclosure:   enclosure1,
-	}
-	if !item1.Equal(itemEqual) {
-		t.Errorf("Items should be equal:\n%s\n%s", item1, itemEqual)
-	}
-	if item1.Equal(item2) {
-		t.Errorf("Items should not be equal:\n%s\n%s", item1, item2)
-	}
-	if item1.Equal(item3) {
-		t.Errorf("Items should not be equal:\n%s\n%s", item1, item2)
-	}
-}
-
 var itemFixtures = []fixture{
 	{
 		name:   "item1",
@@ -105,7 +86,7 @@ func TestItemUnmarshalYAML(t *testing.T) {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			item := fixture.result.(pan.Item)
-			if !item.Equal(result.(pan.Item)) {
+			if diff := deep.Equal(item, result.(pan.Item)); diff != nil {
 				t.Errorf(
 					"Loaded items should be equal:\n%s\n%s",
 					item,
@@ -164,7 +145,7 @@ var itemMap1 = map[interface{}]interface{}{
 
 func TestItemFromMap(t *testing.T) {
 	item := pan.ItemFromMap(itemMap1)
-	if !item1.Equal(item) {
+	if diff := deep.Equal(item1, item); diff != nil {
 		t.Errorf(
 			"%s should be equal to %s",
 			item,

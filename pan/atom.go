@@ -38,13 +38,3 @@ func AtomLinkFromMap(atomLinkMap map[interface{}]interface{}) AtomLink {
 		Type: atomLinkMap["type"].(string),
 	}
 }
-
-// Equal returns true if atomLink is equal to a, false otherwise.
-func (a *AtomLink) Equal(atomLink AtomLink) bool {
-	if a.Href != atomLink.Href ||
-		a.Rel != atomLink.Rel ||
-		a.Type != atomLink.Type {
-		return false
-	}
-	return true
-}

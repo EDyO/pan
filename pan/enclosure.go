@@ -44,16 +44,6 @@ type Enclosure struct {
 	URL     string   `xml:"url,attr"`
 }
 
-// Equal returns true if enclosure2 is equal to e, false otherwise.
-func (e *Enclosure) Equal(enclosure Enclosure) bool {
-	if e.Length != enclosure.Length ||
-		e.Type != enclosure.Type ||
-		e.URL != enclosure.URL {
-		return false
-	}
-	return true
-}
-
 // UnmarshalYAML is the unmarshaler for Enclosure.
 func (e *Enclosure) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	var enclosureMap map[interface{}]interface{}

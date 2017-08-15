@@ -22,6 +22,7 @@ import (
 	"encoding/xml"
 	"testing"
 
+	"github.com/go-test/deep"
 	"gopkg.in/yaml.v2"
 
 	"github.com/EDyO/pan/pan"
@@ -39,20 +40,6 @@ var enclosure2 = pan.Enclosure{
 	URL:    "http://link.to/episode2.mp3",
 }
 
-func TestEnclosureEqual(t *testing.T) {
-	enclosureEqual := pan.Enclosure{
-		Length: enclosure1.Length,
-		Type:   enclosure1.Type,
-		URL:    enclosure1.URL,
-	}
-	if !enclosure1.Equal(enclosureEqual) {
-		t.Errorf("Enclosures should be equal:\n%s\n%s", enclosure1, enclosureEqual)
-	}
-	if enclosure1.Equal(enclosure2) {
-		t.Errorf("Enclosures should not be equal:\n%s\n%s", enclosure1, enclosure2)
-	}
-}
-
 var enclosureFixtures = []fixture{
 	{
 		name:   "enclosure1",
@@ -66,7 +53,7 @@ func TestEnclosureUnmarshalYAML(t *testing.T) {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			enclosure := fixture.result.(pan.Enclosure)
-			if !enclosure.Equal(result.(pan.Enclosure)) {
+			if diff := deep.Equal(enclosure, result); diff != nil {
 				t.Errorf(
 					"Loaded enclosures should be equal:\n%s\n%s",
 					enclosure,
@@ -124,7 +111,7 @@ var enclosureMap1 = map[interface{}]interface{}{
 
 func TestEnclosureFromMap(t *testing.T) {
 	enclosure := pan.EnclosureFromMap(enclosureMap1)
-	if !enclosure1.Equal(enclosure) {
+	if diff := deep.Equal(enclosure1, enclosure); diff != nil {
 		t.Errorf(
 			"%s should be equal to %s",
 			enclosure,

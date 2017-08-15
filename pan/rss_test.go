@@ -22,6 +22,7 @@ import (
 	"encoding/xml"
 	"testing"
 
+	"github.com/go-test/deep"
 	"gopkg.in/yaml.v2"
 
 	"github.com/EDyO/pan/pan"
@@ -38,20 +39,6 @@ var rss2 = pan.RSS{
 	Channel: channel2,
 }
 
-func TestRSSEqual(t *testing.T) {
-	rssEqual := pan.RSS{
-		AtomNS:  rss1.AtomNS,
-		Version: rss1.Version,
-		Channel: rss1.Channel,
-	}
-	if !rss1.Equal(rssEqual) {
-		t.Errorf("RSSs should be equal:\n%s\n%s", rss1, rssEqual)
-	}
-	if rss1.Equal(rss2) {
-		t.Errorf("RSSs should not be equal:\n%s\n%s", rss1, rss2)
-	}
-}
-
 var rssFixtures = []fixture{
 	{
 		name:   "rss1",
@@ -65,7 +52,7 @@ func TestRSSUnmarshalYAML(t *testing.T) {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			rss := fixture.result.(pan.RSS)
-			if !rss.Equal(result.(pan.RSS)) {
+			if diff := deep.Equal(rss, result.(pan.RSS)); diff != nil {
 				t.Errorf(
 					"Loaded RSSs should be equal:\n%s\n%s",
 					rss,
@@ -125,7 +112,7 @@ var rssMap1 = map[interface{}]interface{}{
 
 func TestRSSFromMap(t *testing.T) {
 	rss := pan.RSSFromMap(rssMap1)
-	if !rss1.Equal(rss) {
+	if diff := deep.Equal(rss1, rss); diff != nil {
 		t.Errorf(
 			"%s should be equal to %s",
 			rss,

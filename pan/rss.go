@@ -49,16 +49,6 @@ func RSSFromMap(rssMap map[interface{}]interface{}) RSS {
 	}
 }
 
-// Equal returns true if rss is equal to r, false otherwise.
-func (r *RSS) Equal(rss RSS) bool {
-	if r.Version != rss.Version ||
-		r.AtomNS != rss.AtomNS ||
-		!r.Channel.Equal(rss.Channel) {
-		return false
-	}
-	return true
-}
-
 // UnmarshalYAML is the unmarshaler for RSS.
 func (r *RSS) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	var rssMap map[interface{}]interface{}
