@@ -25,27 +25,32 @@ import (
 
 // RSS represents a RSS Feed.
 type RSS struct {
-	XMLName xml.Name `xml:"rss"`
-	AtomNS  string   `xml:"xmlns:atom,attr"`
-	Version string   `xml:"version,attr"`
-	Channel Channel  `yaml:"channel"`
+	XMLName  xml.Name `xml:"rss"`
+	AtomNS   string   `xml:"xmlns:atom,attr"`
+	ITunesNS string   `xml:"xmlns:itunes,attr"`
+	Version  string   `xml:"version,attr"`
+	Channel  Channel  `yaml:"channel"`
 }
 
 // RSSFromMap is a RSS factory from map[interface{}]interface{}.
 func RSSFromMap(rssMap map[interface{}]interface{}) RSS {
 	attributes := rssMap["attributes"].(map[interface{}]interface{})
 	namespaces := rssMap["namespaces"].(map[interface{}]interface{})
-	atomNS := ""
+	var atomNS, itunesNS string
 	channelMap := rssMap["channel"].(map[interface{}]interface{})
 	for key, content := range namespaces {
-		if key == "atom" {
+		switch key {
+		case "atom":
 			atomNS = content.(string)
+		case "itunes":
+			itunesNS = content.(string)
 		}
 	}
 	return RSS{
-		Version: fmt.Sprintf("%.1f", attributes["version"].(float64)),
-		AtomNS:  atomNS,
-		Channel: ChannelFromMap(channelMap),
+		Version:  fmt.Sprintf("%.1f", attributes["version"].(float64)),
+		AtomNS:   atomNS,
+		ITunesNS: itunesNS,
+		Channel:  ChannelFromMap(channelMap),
 	}
 }
 
@@ -58,6 +63,7 @@ func (r *RSS) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	rss := RSSFromMap(rssMap)
 	r.Version = rss.Version
 	r.AtomNS = rss.AtomNS
+	r.ITunesNS = rss.ITunesNS
 	r.Channel = rss.Channel
 	return
 }

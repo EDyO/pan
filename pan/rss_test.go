@@ -29,9 +29,10 @@ import (
 )
 
 var rss1 = pan.RSS{
-	AtomNS:  "http://www.w3.org/2005/Atom",
-	Version: "2.0",
-	Channel: channel1,
+	AtomNS:   "http://www.w3.org/2005/Atom",
+	ITunesNS: "http://www.itunes.com/dtds/podcast-1.0.dtd",
+	Version:  "2.0",
+	Channel:  channel1,
 }
 
 var rss2 = pan.RSS{
@@ -54,9 +55,10 @@ func TestRSSUnmarshalYAML(t *testing.T) {
 			rss := fixture.result.(pan.RSS)
 			if diff := deep.Equal(rss, result.(pan.RSS)); diff != nil {
 				t.Errorf(
-					"Loaded RSSs should be equal:\n%s\n%s",
+					"Loaded RSSs should be equal:\n%s\n%s\n%s",
 					rss,
 					result,
+					diff,
 				)
 			}
 		}
@@ -102,7 +104,8 @@ func TestRSSMarshalXML(t *testing.T) {
 
 var rssMap1 = map[interface{}]interface{}{
 	"namespaces": map[interface{}]interface{}{
-		"atom": "http://www.w3.org/2005/Atom",
+		"atom":   "http://www.w3.org/2005/Atom",
+		"itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
 	},
 	"attributes": map[interface{}]interface{}{
 		"version": 2.0,
@@ -114,9 +117,10 @@ func TestRSSFromMap(t *testing.T) {
 	rss := pan.RSSFromMap(rssMap1)
 	if diff := deep.Equal(rss1, rss); diff != nil {
 		t.Errorf(
-			"%s should be equal to %s",
+			"%s should be equal to %s\n%s",
 			rss,
 			rss1,
+			diff,
 		)
 	}
 }
