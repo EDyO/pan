@@ -25,9 +25,9 @@ import (
 // AtomLink represents an AtomLink tag.
 type AtomLink struct {
 	XMLName xml.Name `xml:"atom:link"`
-	Href    string   `xml:"href,attr"`
-	Rel     string   `xml:"rel,attr"`
-	Type    string   `xml:"type,attr"`
+	Href    string   `xml:"href,attr,omitempty"`
+	Rel     string   `xml:"rel,attr,omitempty"`
+	Type    string   `xml:"type,attr,omitempty"`
 }
 
 // AtomLinkFromMap is an AtomLink factory from map[interface{}]interface{}.
