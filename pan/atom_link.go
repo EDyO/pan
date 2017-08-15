@@ -32,9 +32,23 @@ type AtomLink struct {
 
 // AtomLinkFromMap is an AtomLink factory from map[interface{}]interface{}.
 func AtomLinkFromMap(atomLinkMap map[interface{}]interface{}) AtomLink {
+	attributesMap := atomLinkMap["attributes"].(map[interface{}]interface{})
 	return AtomLink{
-		Href: atomLinkMap["href"].(string),
-		Rel:  atomLinkMap["rel"].(string),
-		Type: atomLinkMap["type"].(string),
+		Href: attributesMap["href"].(string),
+		Rel:  attributesMap["rel"].(string),
+		Type: attributesMap["type"].(string),
 	}
+}
+
+// UnmarshalYAML is the YAML unmarshaler for AtomLink.
+func (a *AtomLink) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
+	var atomLinkMap map[interface{}]interface{}
+	if err = unmarshal(&atomLinkMap); err != nil {
+		return
+	}
+	atomLink := AtomLinkFromMap(atomLinkMap)
+	a.Href = atomLink.Href
+	a.Rel = atomLink.Rel
+	a.Type = atomLink.Type
+	return
 }
