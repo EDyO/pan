@@ -50,19 +50,6 @@ func ItemFromMap(itemMap map[interface{}]interface{}) Item {
 	}
 }
 
-// Equal returns true if item2 is equal to i, false otherwise.
-func (i *Item) Equal(item Item) bool {
-	if i.Title != item.Title ||
-		i.Link != item.Link ||
-		i.GUID != item.GUID ||
-		i.Description != item.Description ||
-		i.PubDate != item.PubDate ||
-		!i.Enclosure.Equal(item.Enclosure) {
-		return false
-	}
-	return true
-}
-
 // UnmarshalYAML is the unmarshaler for Item.
 func (i *Item) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	var itemMap map[interface{}]interface{}

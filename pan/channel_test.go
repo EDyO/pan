@@ -22,6 +22,7 @@ import (
 	"encoding/xml"
 	"testing"
 
+	"github.com/go-test/deep"
 	"gopkg.in/yaml.v2"
 
 	"github.com/EDyO/pan/pan"
@@ -67,27 +68,6 @@ var channel4 = pan.Channel{
 	Items:       []pan.Item{item1},
 }
 
-func TestChannelEqual(t *testing.T) {
-	channelEqual := pan.Channel{
-		AtomLink:    channel1.AtomLink,
-		Title:       channel1.Title,
-		Link:        channel1.Link,
-		Language:    channel1.Language,
-		Copyright:   channel1.Copyright,
-		Description: channel1.Description,
-		Items:       channel1.Items,
-	}
-	if !channel1.Equal(channelEqual) {
-		t.Errorf("Channels should be equal:\n%s\n%s", channel1, channelEqual)
-	}
-	if channel1.Equal(channel2) {
-		t.Errorf("Channels should not be equal:\n%s\n%s", channel1, channel2)
-	}
-	if channel1.Equal(channel4) {
-		t.Errorf("Channels should not be equal:\n%s\n%s", channel1, channel4)
-	}
-}
-
 var channelFixtures = []fixture{
 	{
 		name:   "channel1",
@@ -106,7 +86,7 @@ func TestChannelUnmarshalYAML(t *testing.T) {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			channel := fixture.result.(pan.Channel)
-			if !channel.Equal(result.(pan.Channel)) {
+			if diff := deep.Equal(channel, result.(pan.Channel)); diff != nil {
 				t.Errorf(
 					"Loaded channels should be equal:\n%s\n%s",
 					channel,
@@ -166,7 +146,7 @@ var channelMap1 = map[interface{}]interface{}{
 
 func TestChannelFromMap(t *testing.T) {
 	channel := pan.ChannelFromMap(channelMap1)
-	if !channel1.Equal(channel) {
+	if diff := deep.Equal(channel1, channel); diff != nil {
 		t.Errorf(
 			"%s should be equal to %s",
 			channel,

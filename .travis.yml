@@ -9,6 +9,7 @@ install:
   - go get github.com/spf13/viper
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
+  - go get github.com/go-test/deep
 script:
   - go test -v -covermode=count -coverprofile=coverage.out github.com/EDyO/pan/pan
   - test -z "${COVERALLS_TOKEN}" || $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN

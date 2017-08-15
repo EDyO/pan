@@ -22,6 +22,7 @@ import (
 	"encoding/xml"
 	"testing"
 
+	"github.com/go-test/deep"
 	"gopkg.in/yaml.v2"
 
 	"github.com/EDyO/pan/pan"
@@ -39,20 +40,6 @@ var atom2 = pan.AtomLink{
 	Type: "application/rss+xml",
 }
 
-func TestAtomLinkEqual(t *testing.T) {
-	atomEqual := pan.AtomLink{
-		Href: atom1.Href,
-		Rel:  atom1.Rel,
-		Type: atom1.Type,
-	}
-	if !atom1.Equal(atomEqual) {
-		t.Errorf("Atoms should be equal:\n%s\n%s", atom1, atomEqual)
-	}
-	if atom1.Equal(atom2) {
-		t.Errorf("Atoms should not be equal:\n%s\n%s", atom1, atom2)
-	}
-}
-
 var atomFixtures = []fixture{
 	{
 		name:   "atom1",
@@ -66,7 +53,7 @@ func TestAtomLinkUnmarshalYAML(t *testing.T) {
 		content := fixture.load("yml")
 		fixture.checkFail = func(result interface{}, t *testing.T) {
 			atom := fixture.result.(pan.AtomLink)
-			if !atom.Equal(result.(pan.AtomLink)) {
+			if diff := deep.Equal(atom, result.(pan.AtomLink)); diff != nil {
 				t.Errorf(
 					"Loaded atoms should be equal:\n%s\n%s",
 					atom,
@@ -122,7 +109,7 @@ var atomMap1 = map[interface{}]interface{}{
 
 func TestAtomLinkFromMap(t *testing.T) {
 	atom := pan.AtomLinkFromMap(atomMap1)
-	if !atom1.Equal(atom) {
+	if diff := deep.Equal(atom, atom1); diff != nil {
 		t.Errorf(
 			"%s should be equal to %s",
 			atom,
