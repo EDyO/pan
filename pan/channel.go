@@ -31,6 +31,7 @@ type Channel struct {
 	ITunesExplicit string       `yaml:"itunes_explicit" xml:"itunes:explicit,omitempty"`
 	ITunesSummary  string       `yaml:"itunes_summary" xml:"itunes:summary,omitempty"`
 	ITunesImage    *ITunesImage `yaml:"itunes_image" xml:"itunes:image,omitempty"`
+	ITunesOwner    *ITunesOwner `yaml:"itunes_owner" xml:"itunes:owner,omitempty"`
 	Title          string       `xml:"title"`
 	Link           string       `xml:"link"`
 	Language       string       `xml:"language"`
@@ -61,6 +62,11 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 		iTunesImageMap := channelMap["itunes_image"].(map[interface{}]interface{})
 		iTunesImage = ITunesImageFromMap(iTunesImageMap)
 	}
+	iTunesOwner := ITunesOwner{}
+	if channelMap["itunes_owner"] != nil {
+		iTunesOwnerMap := channelMap["itunes_owner"].(map[interface{}]interface{})
+		iTunesOwner = ITunesOwnerFromMap(iTunesOwnerMap)
+	}
 	return Channel{
 		AtomLink:       &atomLink,
 		ITunesSubtitle: channelMap["itunes_subtitle"].(string),
@@ -68,6 +74,7 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 		ITunesExplicit: explicit,
 		ITunesSummary:  channelMap["itunes_summary"].(string),
 		ITunesImage:    &iTunesImage,
+		ITunesOwner:    &iTunesOwner,
 		Title:          channelMap["title"].(string),
 		Link:           channelMap["link"].(string),
 		Language:       channelMap["language"].(string),

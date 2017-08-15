@@ -7,6 +7,10 @@
     <itunes:explicit>No</itunes:explicit>
     <itunes:summary>This podcast is about something</itunes:summary>
     <itunes:image href="http://link.to/podcast.png"></itunes:image>
+    <itunes:owner>
+      <itunes:name>Somebody</itunes:name>
+      <itunes:email>somebody@link.to</itunes:email>
+    </itunes:owner>
     <title>Something Podcast</title>
     <link>http://link.to</link>
     <language>en-us</language>

@@ -21,6 +21,9 @@ channel:
   itunes_image:
     attributes:
       href: http://link.to/podcast.png
+  itunes_owner:
+    itunes_name: Somebody
+    itunes_email: somebody@link.to
   items:
   - title: This is the title of the episode
     link: http://link.to/episode1.mp3
