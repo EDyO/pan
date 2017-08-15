@@ -21,7 +21,6 @@ package pan
 import (
 	"encoding/xml"
 	"fmt"
-	"strconv"
 )
 
 // RSS represents a RSS Feed.
@@ -30,6 +29,24 @@ type RSS struct {
 	AtomNS  string   `xml:"xmlns:atom,attr"`
 	Version string   `xml:"version,attr"`
 	Channel Channel  `yaml:"channel"`
+}
+
+// RSSFromMap is a RSS factory from map[interface{}]interface{}.
+func RSSFromMap(rssMap map[interface{}]interface{}) RSS {
+	attributes := rssMap["attributes"].(map[interface{}]interface{})
+	namespaces := rssMap["namespaces"].(map[interface{}]interface{})
+	atomNS := ""
+	channelMap := rssMap["channel"].(map[interface{}]interface{})
+	for key, content := range namespaces {
+		if key == "atom" {
+			atomNS = content.(string)
+		}
+	}
+	return RSS{
+		Version: fmt.Sprintf("%.1f", attributes["version"].(float64)),
+		AtomNS:  atomNS,
+		Channel: ChannelFromMap(channelMap),
+	}
 }
 
 // Equal returns true if rss is equal to r, false otherwise.
@@ -44,51 +61,13 @@ func (r *RSS) Equal(rss RSS) bool {
 
 // UnmarshalYAML is the unmarshaler for RSS.
 func (r *RSS) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
-	var rss map[string]interface{}
-	if err = unmarshal(&rss); err != nil {
+	var rssMap map[interface{}]interface{}
+	if err = unmarshal(&rssMap); err != nil {
 		return
 	}
-	attributes := rss["attributes"].(map[interface{}]interface{})
-	r.Version = fmt.Sprintf("%.1f", attributes["version"].(float64))
-	namespaces := rss["namespaces"].(map[interface{}]interface{})
-	for key, content := range namespaces {
-		if key == "atom" {
-			r.AtomNS = content.(string)
-		}
-	}
-	channel := rss["channel"].(map[interface{}]interface{})
-	atomLinkMap := channel["atom_link"].(map[interface{}]interface{})
-	atomLink := AtomLink{
-		Href: atomLinkMap["href"].(string),
-		Rel:  atomLinkMap["rel"].(string),
-		Type: atomLinkMap["type"].(string),
-	}
-	r.Channel = Channel{
-		AtomLink:    &atomLink,
-		Title:       channel["title"].(string),
-		Link:        channel["link"].(string),
-		Language:    channel["language"].(string),
-		Copyright:   channel["copyright"].(string),
-		Description: channel["description"].(string),
-		Items:       []Item{},
-	}
-	for _, itemElement := range channel["items"].([]interface{}) {
-		itemMap := itemElement.(map[interface{}]interface{})
-		enclosure := itemMap["enclosure"].(map[interface{}]interface{})
-		enclosureAttrs := enclosure["attributes"].(map[interface{}]interface{})
-		item := Item{
-			Title:       itemMap["title"].(string),
-			Link:        itemMap["link"].(string),
-			GUID:        itemMap["link"].(string),
-			Description: itemMap["description"].(string),
-			PubDate:     itemMap["pubDate"].(string),
-			Enclosure: Enclosure{
-				Length: strconv.Itoa(enclosureAttrs["length"].(int)),
-				Type:   enclosureAttrs["type"].(string),
-				URL:    enclosureAttrs["url"].(string),
-			},
-		}
-		r.Channel.Items = append(r.Channel.Items, item)
-	}
+	rss := RSSFromMap(rssMap)
+	r.Version = rss.Version
+	r.AtomNS = rss.AtomNS
+	r.Channel = rss.Channel
 	return
 }

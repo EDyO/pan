@@ -39,9 +39,9 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 	atomLinkMap := channelMap["atom_link"].(map[interface{}]interface{})
 	atomLink := AtomLinkFromMap(atomLinkMap)
 	items := []Item{}
-	itemsMap := channelMap["items"].([]map[interface{}]interface{})
-	for _, itemMap := range itemsMap {
-		item := ItemFromMap(itemMap)
+	itemsList := channelMap["items"].([]interface{})
+	for _, itemMap := range itemsList {
+		item := ItemFromMap(itemMap.(map[interface{}]interface{}))
 		items = append(items, item)
 	}
 	return Channel{

@@ -112,3 +112,24 @@ func TestRSSMarshalXML(t *testing.T) {
 		)
 	}
 }
+
+var rssMap1 = map[interface{}]interface{}{
+	"namespaces": map[interface{}]interface{}{
+		"atom": "http://www.w3.org/2005/Atom",
+	},
+	"attributes": map[interface{}]interface{}{
+		"version": 2.0,
+	},
+	"channel": channelMap1,
+}
+
+func TestRSSFromMap(t *testing.T) {
+	rss := pan.RSSFromMap(rssMap1)
+	if !rss1.Equal(rss) {
+		t.Errorf(
+			"%s should be equal to %s",
+			rss,
+			rss1,
+		)
+	}
+}

@@ -161,7 +161,7 @@ var channelMap1 = map[interface{}]interface{}{
 	"language":    "en-us",
 	"copyright":   "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
 	"description": "This podcast is about something",
-	"items":       []map[interface{}]interface{}{itemMap1},
+	"items":       []interface{}{itemMap1},
 }
 
 func TestChannelFromMap(t *testing.T) {
