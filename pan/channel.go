@@ -27,6 +27,7 @@ type Channel struct {
 	XMLName        xml.Name  `xml:"channel"`
 	AtomLink       *AtomLink `yaml:"atom_link" xml:"atom:link,omitempty"`
 	ITunesSubtitle string    `yaml:"itunes_subtitle" xml:"itunes:subtitle,omitempty"`
+	ITunesAuthor   string    `yaml:"itunes_author" xml:"itunes:author,omitempty"`
 	Title          string    `xml:"title"`
 	Link           string    `xml:"link"`
 	Language       string    `xml:"language"`
@@ -51,6 +52,7 @@ func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
 	return Channel{
 		AtomLink:       &atomLink,
 		ITunesSubtitle: channelMap["itunes_subtitle"].(string),
+		ITunesAuthor:   channelMap["itunes_author"].(string),
 		Title:          channelMap["title"].(string),
 		Link:           channelMap["link"].(string),
 		Language:       channelMap["language"].(string),

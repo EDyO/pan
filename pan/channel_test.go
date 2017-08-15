@@ -31,6 +31,7 @@ import (
 var channel1 = pan.Channel{
 	AtomLink:       &atomLink1,
 	ITunesSubtitle: "When something means something",
+	ITunesAuthor:   "Somebody",
 	Title:          "Something Podcast",
 	Link:           "http://link.to",
 	Language:       "en-us",
@@ -139,6 +140,7 @@ func TestChannelMarshalXML(t *testing.T) {
 var channelMap1 = map[interface{}]interface{}{
 	"atom_link":       atomLinkMap1,
 	"itunes_subtitle": "When something means something",
+	"itunes_author":   "Somebody",
 	"title":           "Something Podcast",
 	"link":            "http://link.to",
 	"language":        "en-us",
