@@ -115,11 +115,9 @@ func TestAtomLinkMarshalXML(t *testing.T) {
 }
 
 var atomMap1 = map[interface{}]interface{}{
-	"attributes": map[interface{}]interface{}{
-		"href": "http://link.to/feed.xml",
-		"rel":  "self",
-		"type": "application/rss+xml",
-	},
+	"href": "http://link.to/feed.xml",
+	"rel":  "self",
+	"type": "application/rss+xml",
 }
 
 func TestAtomLinkFromMap(t *testing.T) {

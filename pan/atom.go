@@ -32,11 +32,10 @@ type AtomLink struct {
 
 // AtomLinkFromMap is an AtomLink factory from map[interface{}]interface{}.
 func AtomLinkFromMap(atomLinkMap map[interface{}]interface{}) AtomLink {
-	attributes := atomLinkMap["attributes"].(map[interface{}]interface{})
 	return AtomLink{
-		Href: attributes["href"].(string),
-		Rel:  attributes["rel"].(string),
-		Type: attributes["type"].(string),
+		Href: atomLinkMap["href"].(string),
+		Rel:  atomLinkMap["rel"].(string),
+		Type: atomLinkMap["type"].(string),
 	}
 }
 
