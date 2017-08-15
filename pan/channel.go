@@ -36,8 +36,11 @@ type Channel struct {
 
 // ChannelFromMap is a Channel factory form map[interface{}]interface{}.
 func ChannelFromMap(channelMap map[interface{}]interface{}) Channel {
-	atomLinkMap := channelMap["atom_link"].(map[interface{}]interface{})
-	atomLink := AtomLinkFromMap(atomLinkMap)
+	atomLink := AtomLink{}
+	if channelMap["atom_link"] != nil {
+		atomLinkMap := channelMap["atom_link"].(map[interface{}]interface{})
+		atomLink = AtomLinkFromMap(atomLinkMap)
+	}
 	items := []Item{}
 	itemsList := channelMap["items"].([]interface{})
 	for _, itemMap := range itemsList {

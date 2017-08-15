@@ -10,9 +10,10 @@ channel:
   copyright: creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US
   description: This podcast is about something
   atom_link:
-    href: http://link.to/feed.xml
-    rel: self
-    type: application/rss+xml
+    attributes:
+      href: http://link.to/feed.xml
+      rel: self
+      type: application/rss+xml
   items:
   - title: This is the title of the episode
     link: http://link.to/episode1.mp3
