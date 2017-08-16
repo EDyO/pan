@@ -24,15 +24,32 @@ import (
 
 // ITunesCategory represents an AtomLink tag.
 type ITunesCategory struct {
-	XMLName xml.Name `xml:"itunes:category"`
-	Text    string   `xml:"text,attr,omitempty"`
+	XMLName    xml.Name `xml:"itunes:category"`
+	Text       string   `xml:"text,attr,omitempty"`
+	Categories []ITunesCategory
 }
 
 // ITunesCategoryFromMap is an ITunesCategory factory from map[interface{}]interface{}.
 func ITunesCategoryFromMap(iTunesCategoryMap map[interface{}]interface{}) ITunesCategory {
-	attributesMap := iTunesCategoryMap["attributes"].(map[interface{}]interface{})
+	attributesMap := map[interface{}]interface{}{}
+	if iTunesCategoryMap["itunes_category"] != nil {
+		categoryMap := iTunesCategoryMap["itunes_category"].(map[interface{}]interface{})
+		attributesMap = categoryMap["attributes"].(map[interface{}]interface{})
+	} else {
+		attributesMap = iTunesCategoryMap["attributes"].(map[interface{}]interface{})
+	}
+	categoriesMap := []interface{}{}
+	if iTunesCategoryMap["itunes_categories"] != nil {
+		categoriesMap = iTunesCategoryMap["itunes_categories"].([]interface{})
+	}
+	categories := []ITunesCategory{}
+	for _, categoryMap := range categoriesMap {
+		category := ITunesCategoryFromMap(categoryMap.(map[interface{}]interface{}))
+		categories = append(categories, category)
+	}
 	return ITunesCategory{
-		Text: attributesMap["text"].(string),
+		Text:       attributesMap["text"].(string),
+		Categories: categories,
 	}
 }
 
@@ -44,5 +61,6 @@ func (i *ITunesCategory) UnmarshalYAML(unmarshal func(interface{}) error) (err e
 	}
 	iTunesCategory := ITunesCategoryFromMap(iTunesCategoryMap)
 	i.Text = iTunesCategory.Text
+	i.Categories = iTunesCategory.Categories
 	return
 }

@@ -29,11 +29,37 @@ import (
 )
 
 var iTunesCategory1 = pan.ITunesCategory{
-	Text: "Society & Culture",
+	Text:       "Society & Culture",
+	Categories: []pan.ITunesCategory{},
 }
 
 var iTunesCategory2 = pan.ITunesCategory{
-	Text: "Technology",
+	Text:       "Technology",
+	Categories: []pan.ITunesCategory{},
+}
+
+var iTunesCategory3 = pan.ITunesCategory{
+	Text: "Society & Culture",
+	Categories: []pan.ITunesCategory{
+		{
+			Text:       "History",
+			Categories: []pan.ITunesCategory{},
+		},
+	},
+}
+
+var iTunesCategory5 = pan.ITunesCategory{
+	Text: "Society & Culture",
+	Categories: []pan.ITunesCategory{
+		{
+			Text:       "History",
+			Categories: []pan.ITunesCategory{},
+		},
+		{
+			Text:       "Philosophy",
+			Categories: []pan.ITunesCategory{},
+		},
+	},
 }
 
 var iTunesCategoryFixtures = []fixture{
@@ -41,6 +67,16 @@ var iTunesCategoryFixtures = []fixture{
 		name:   "itunes_category1",
 		desc:   "Simple itunes:category",
 		result: iTunesCategory1,
+	},
+	{
+		name:   "itunes_category3",
+		desc:   "Selfincluding itunes:category",
+		result: iTunesCategory3,
+	},
+	{
+		name:   "itunes_category5",
+		desc:   "Selfincluding stacked itunes:category",
+		result: iTunesCategory5,
 	},
 }
 
@@ -103,6 +139,35 @@ var iTunesCategoryMap1 = map[interface{}]interface{}{
 	},
 }
 
+var iTunesCategoryMap2 = map[interface{}]interface{}{
+	"attributes": map[interface{}]interface{}{
+		"text": "History",
+	},
+}
+
+var iTunesCategoryMap3 = map[interface{}]interface{}{
+	"attributes": map[interface{}]interface{}{
+		"text": "Society & Culture",
+	},
+	"itunes_categories": []interface{}{iTunesCategoryMap2},
+}
+
+var iTunesCategoryMap4 = map[interface{}]interface{}{
+	"attributes": map[interface{}]interface{}{
+		"text": "Philosophy",
+	},
+}
+
+var iTunesCategoryMap5 = map[interface{}]interface{}{
+	"attributes": map[interface{}]interface{}{
+		"text": "Society & Culture",
+	},
+	"itunes_categories": []interface{}{
+		iTunesCategoryMap2,
+		iTunesCategoryMap4,
+	},
+}
+
 func TestITunesCategoryFromMap(t *testing.T) {
 	iTunesCategory := pan.ITunesCategoryFromMap(iTunesCategoryMap1)
 	if diff := deep.Equal(iTunesCategory, iTunesCategory1); diff != nil {
@@ -110,6 +175,22 @@ func TestITunesCategoryFromMap(t *testing.T) {
 			"%s should be equal to %s",
 			iTunesCategory,
 			iTunesCategory1,
+		)
+	}
+	iTunesCategory = pan.ITunesCategoryFromMap(iTunesCategoryMap3)
+	if diff := deep.Equal(iTunesCategory, iTunesCategory3); diff != nil {
+		t.Errorf(
+			"%s should be equal to %s",
+			iTunesCategory,
+			iTunesCategory3,
+		)
+	}
+	iTunesCategory = pan.ITunesCategoryFromMap(iTunesCategoryMap5)
+	if diff := deep.Equal(iTunesCategory, iTunesCategory5); diff != nil {
+		t.Errorf(
+			"%s should be equal to %s",
+			iTunesCategory,
+			iTunesCategory5,
 		)
 	}
 }
