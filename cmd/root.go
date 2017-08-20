@@ -46,10 +46,11 @@ For example:
 		if len(args) != 1 {
 			log.Fatal("Missing filename to process")
 		}
-		err := pan.Process(args)
+		result, err := pan.Process(args)
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Println(result)
 	},
 }
 
