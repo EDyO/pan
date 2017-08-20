@@ -10,7 +10,6 @@ You must setup Go in your computer, and, then, go get pan:
     
 ## Usage
 
-`pan` allows you to convert a RSS feed in XML format an get a YAML representation, or the other way around:
+`pan` allows you to convert a RSS feed in a YAML representation to get a valid XML content:
 
-    pan my_feed.xml > my_feed.yml
     pan my_feed.yml > my_feed.xml
