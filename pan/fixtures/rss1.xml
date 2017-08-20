@@ -11,6 +11,10 @@
       <itunes:name>Somebody</itunes:name>
       <itunes:email>somebody@link.to</itunes:email>
     </itunes:owner>
+    <itunes:category text="Society &amp; Culture">
+      <itunes:category text="History"></itunes:category>
+      <itunes:category text="Philosophy"></itunes:category>
+    </itunes:category>
     <title>Something Podcast</title>
     <link>http://link.to</link>
     <language>en-us</language>
