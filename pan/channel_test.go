@@ -29,19 +29,20 @@ import (
 )
 
 var channel1 = pan.Channel{
-	AtomLink:       &atomLink1,
-	ITunesSubtitle: "When something means something",
-	ITunesAuthor:   "Somebody",
-	ITunesExplicit: "No",
-	ITunesSummary:  "This podcast is about something",
-	ITunesImage:    &iTunesImage1,
-	ITunesOwner:    &iTunesOwner1,
-	Title:          "Something Podcast",
-	Link:           "http://link.to",
-	Language:       "en-us",
-	Copyright:      "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
-	Description:    "This podcast is about something",
-	Items:          []pan.Item{item1},
+	AtomLink:         &atomLink1,
+	ITunesSubtitle:   "When something means something",
+	ITunesAuthor:     "Somebody",
+	ITunesExplicit:   "No",
+	ITunesSummary:    "This podcast is about something",
+	ITunesImage:      &iTunesImage1,
+	ITunesOwner:      &iTunesOwner1,
+	ITunesCategories: []pan.ITunesCategory{iTunesCategory5},
+	Title:            "Something Podcast",
+	Link:             "http://link.to",
+	Language:         "en-us",
+	Copyright:        "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
+	Description:      "This podcast is about something",
+	Items:            []pan.Item{item1},
 }
 
 var channel2 = pan.Channel{
@@ -142,28 +143,30 @@ func TestChannelMarshalXML(t *testing.T) {
 }
 
 var channelMap1 = map[interface{}]interface{}{
-	"atom_link":       atomLinkMap1,
-	"itunes_subtitle": "When something means something",
-	"itunes_author":   "Somebody",
-	"itunes_explicit": false,
-	"itunes_summary":  "This podcast is about something",
-	"itunes_image":    iTunesImageMap1,
-	"itunes_owner":    iTunesOwnerMap1,
-	"title":           "Something Podcast",
-	"link":            "http://link.to",
-	"language":        "en-us",
-	"copyright":       "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
-	"description":     "This podcast is about something",
-	"items":           []interface{}{itemMap1},
+	"atom_link":         atomLinkMap1,
+	"itunes_subtitle":   "When something means something",
+	"itunes_author":     "Somebody",
+	"itunes_explicit":   false,
+	"itunes_summary":    "This podcast is about something",
+	"itunes_image":      iTunesImageMap1,
+	"itunes_owner":      iTunesOwnerMap1,
+	"itunes_categories": []interface{}{iTunesCategoryMap5},
+	"title":             "Something Podcast",
+	"link":              "http://link.to",
+	"language":          "en-us",
+	"copyright":         "creative commons - Attribution - Non commercial - Share Alike - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US",
+	"description":       "This podcast is about something",
+	"items":             []interface{}{itemMap1},
 }
 
 func TestChannelFromMap(t *testing.T) {
 	channel := pan.ChannelFromMap(channelMap1)
 	if diff := deep.Equal(channel1, channel); diff != nil {
 		t.Errorf(
-			"%s should be equal to %s",
+			"%s should be equal to %s\n%s",
 			channel,
 			channel1,
+			diff,
 		)
 	}
 }
